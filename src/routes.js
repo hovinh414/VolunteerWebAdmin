@@ -6,7 +6,6 @@ import {
   MdPerson,
   MdHome,
   MdLock,
-  MdOutlineShoppingCart,
   MdOutlineSignpost,
 } from "react-icons/md";
 
@@ -50,9 +49,9 @@ const routes = [
     component: DataTables,
   },
   {
-    name: "Thông tin cá nhân",
+    name: "Quản lý tài khoản",
     layout: "/admin",
-    path: "/profile",
+    path: "/users",
     icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
     component: Profile,
   },

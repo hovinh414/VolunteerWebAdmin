@@ -8,6 +8,8 @@ import {
   Text,
   useColorModeValue,
   SimpleGrid,
+  CircularProgress,
+  CircularProgressLabel,
 } from "@chakra-ui/react";
 
 // Custom components
@@ -26,6 +28,7 @@ export default function Marketplace() {
   const [token, setToken] = useState("");
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -48,6 +51,7 @@ export default function Marketplace() {
   };
 
   const fetchData = useCallback(async () => {
+    setIsLoading(true);
     const config = {
       headers: {
         Authorization: token,
@@ -64,6 +68,8 @@ export default function Marketplace() {
       }
     } catch (error) {
       console.log("API Error get post:", error);
+    } finally {
+      setIsLoading(false);
     }
   }, [orgId, page, token]);
 
@@ -82,6 +88,7 @@ export default function Marketplace() {
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
       {/* Main Fields */}
+
       <Grid
         mb="20px"
         w={"100%"}
@@ -136,47 +143,63 @@ export default function Marketplace() {
                 </Link>
               </Flex>
             </Flex>
-            <SimpleGrid columns={{ base: 1, md: 4 }} gap="20px">
-              {posts.map((post, index) => (
-                <NFT
-                  key={index}
-                  avatar={post.ownerAvatar}
-                  name={post.ownerDisplayname}
-                  createDate={formatDate(post.createdAt)}
-                  bidders={[
-                    Avatar1,
-                    Avatar2,
-                    Avatar3,
-                    Avatar4,
-                    Avatar1,
-                    Avatar1,
-                    Avatar1,
-                    Avatar1,
-                  ]}
-                  images={post.media[0]}
-                  currentbid={
-                    post.type === "activity" || post.type === "Activity"
-                      ? "Hoạt động tình nguyện"
-                      : "Hoạt động gây quỹ"
-                  }
-                  download="#"
-                  participants={post.participants}
-                  totalUserJoin={post.totalUserJoin}
-                  exprirationDate={formatDate(post.exprirationDate)}
-                />
-              ))}
-            </SimpleGrid>
+            {isLoading ? (
+              <SimpleGrid gap="20px">
+                <Flex
+                  justifyContent="center"
+                  alignItems="center"
+                  w="100%"
+                  h="300px"
+                >
+                  <CircularProgress isIndeterminate color={textColorBrand} />
+                </Flex>
+              </SimpleGrid>
+            ) : (
+              <SimpleGrid columns={{ base: 1, md: 4 }} gap="20px">
+                {posts.map((post, index) => (
+                  <NFT
+                    key={index}
+                    post={post}
+                    avatar={post.ownerAvatar}
+                    name={post.ownerDisplayname}
+                    createDate={formatDate(post.createdAt)}
+                    bidders={[
+                      Avatar1,
+                      Avatar2,
+                      Avatar3,
+                      Avatar4,
+                      Avatar1,
+                      Avatar1,
+                      Avatar1,
+                      Avatar1,
+                    ]}
+                    images={post.media}
+                    currentbid={
+                      post.type === "activity" || post.type === "Activity"
+                        ? "Hoạt động tình nguyện"
+                        : "Hoạt động gây quỹ"
+                    }
+                    download="#"
+                    participants={post.participants}
+                    totalUserJoin={post.totalUserJoin}
+                    exprirationDate={formatDate(post.exprirationDate)}
+                  />
+                ))}
+              </SimpleGrid>
+            )}
           </Flex>
         </Flex>
-        <Flex mt="4" justifyContent="center" alignItems={"center"}>
-          <Button onClick={handlePrevPage} disabled={page === 1} mr="4">
-            {"<"}
-          </Button>
-          <Text fontFamily="Roboto" color={textColor}>{`Trang ${page}`}</Text>
-          <Button onClick={handleNextPage} ml="4">
-            {">"}
-          </Button>
-        </Flex>
+        {isLoading ? null : (
+          <Flex mt="4" justifyContent="center" alignItems={"center"}>
+            <Button onClick={handlePrevPage} disabled={page === 1} mr="4">
+              {"<"}
+            </Button>
+            <Text fontFamily="Roboto" color={textColor}>{`Trang ${page}`}</Text>
+            <Button onClick={handleNextPage} disabled={posts.length < 8} ml="4">
+              {">"}
+            </Button>
+          </Flex>
+        )}
 
         {/* <Flex
           flexDirection='column'

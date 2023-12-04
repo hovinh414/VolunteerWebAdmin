@@ -21,14 +21,20 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-
+import {
+  MdBlock,
+  MdEdit,
+  MdHome,
+  MdLock,
+  MdOutlineSignpost,
+} from "react-icons/md";
 // Custom components
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
 import "@fontsource/roboto";
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
-export default function ColumnsTable(props) {
+export default function Usertables(props) {
   const { columnsData, tableData, bidders } = props;
   const textColorBid = useColorModeValue("brand.500", "white");
   const columns = useMemo(() => columnsData, [columnsData]);
@@ -76,7 +82,7 @@ export default function ColumnsTable(props) {
           fontWeight="700"
           lineHeight="100%"
         >
-          Tài khoản chờ xác nhận
+          Quản lý tài khoản
         </Text>
         <Menu />
       </Flex>
@@ -93,7 +99,7 @@ export default function ColumnsTable(props) {
                   borderColor={borderColor}
                 >
                   <Flex
-                    justify="space-between"
+                    justify="center"
                     align="center"
                     fontSize={{ sm: "10px", lg: "12px" }}
                     color="gray.400"
@@ -112,26 +118,47 @@ export default function ColumnsTable(props) {
               <Tr {...row.getRowProps()} key={index}>
                 {row.cells.map((cell, index) => {
                   let data = "";
-                  if (cell.column.Header === "Tên tổ chức") {
+                  if (cell.column.Header === "Ảnh đại diện") {
                     data = (
-                      <Text
-                        fontFamily="Roboto"
-                        color={textColor}
-                        fontSize="sm"
-                        fontWeight="700"
-                      >
-                        {cell.value}
-                      </Text>
+                      <Flex justifyContent={"center"}>
+                        <Avatar w={"50px"} h={"50px"} src={cell.value} />
+                      </Flex>
+                    );
+                  } else if (cell.column.Header === "Tên tổ chức") {
+                    data = (
+                      <Flex justifyContent={"center"}>
+                        <Text
+                          fontFamily="Roboto"
+                          color={textColor}
+                          fontSize="sm"
+                          fontWeight="700"
+                        >
+                          {cell.value}
+                        </Text>
+                      </Flex>
+                    );
+                  } else if (cell.column.Header === "Loại tài khoản") {
+                    data = (
+                      <Flex justifyContent={"center"}>
+                        <Text
+                          fontFamily="Roboto"
+                          color={textColor}
+                          fontSize="sm"
+                          fontWeight="700"
+                        >
+                          {cell.value}
+                        </Text>
+                      </Flex>
                     );
                   } else if (cell.column.Header === "Trạng thái") {
                     data = (
-                      <Flex align="center">
+                      <Flex align="center" justifyContent={"center"}>
                         <Icon
                           w="24px"
                           h="24px"
                           me="5px"
                           color={
-                            cell.value === "Đã xác nhận"
+                            cell.value === "Đã xác thực"
                               ? "green.500"
                               : cell.value === "Từ chối"
                               ? "red.500"
@@ -140,7 +167,7 @@ export default function ColumnsTable(props) {
                               : null
                           }
                           as={
-                            cell.value === "Đã xác nhận"
+                            cell.value === "Đã xác thực"
                               ? MdCheckCircle
                               : cell.value === "Từ chối"
                               ? MdCancel
@@ -159,62 +186,55 @@ export default function ColumnsTable(props) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "Ngày") {
+                  } else if (cell.column.Header === "Ngày tạo") {
                     data = (
-                      <Text
-                        fontFamily="Roboto"
-                        color={textColor}
-                        fontSize="sm"
-                        fontWeight="700"
-                      >
-                        {cell.value}
-                      </Text>
-                    );
-                  } else if (cell.column.Header === "Minh chứng") {
-                    console.log(cell.value);
-                    data = (
-                      <Flex align="center">
-                        <AvatarGroup
-                          max={3}
-                          color={textColorBid}
-                          size="sm"
-                          mt={{
-                            base: "0px",
-                            md: "10px",
-                            lg: "0px",
-                            xl: "10px",
-                            "2xl": "0px",
-                          }}
-                          fontSize="12px"
+                      <Flex justifyContent={"center"}>
+                        <Text
+                          fontFamily="Roboto"
+                          color={textColor}
+                          fontSize="sm"
+                          fontWeight="700"
                         >
-                          {bidders.map((avt, key) => (
-                            <Avatar w={"50px"} h={"50px"} key={key} src={avt} />
-                          ))}
-                        </AvatarGroup>
+                          {cell.value}
+                        </Text>
                       </Flex>
                     );
                   } else if (cell.column.Header === "Thao tác") {
                     data = (
-                      <ButtonGroup variant="solid" spacing="3">
-                        <Button
-                          fontFamily="Roboto"
-                          size="sm"
-                          colorScheme="brandScheme"
-                        >
-                          Xác nhận
-                        </Button>
-                        <Button
-                          fontFamily="Roboto"
-                          size="sm"
-                          backgroundColor="gray.500"
-                          color="#fff"
-                          _hover={{
-                            backgroundColor: "gray.600",
-                          }}
-                        >
-                          Từ chối
-                        </Button>
-                      </ButtonGroup>
+                      <Flex justifyContent={"center"}>
+                        <ButtonGroup variant="solid" spacing="3">
+                          <Button
+                            fontFamily="Roboto"
+                            size="sm"
+                            colorScheme="brandScheme"
+                            hover={"Khóa tài khoản"}
+                          >
+                            <Icon
+                              as={MdBlock}
+                              width="20px"
+                              height="20px"
+                              color="inherit"
+                            />
+                          </Button>
+                          <Button
+                            fontFamily="Roboto"
+                            size="sm"
+                            backgroundColor="gray.800"
+                            color="#fff"
+                            _hover={{
+                              backgroundColor: "gray.600",
+                              textDecoration: "underline",
+                            }}
+                          >
+                            <Icon
+                              as={MdEdit}
+                              width="20px"
+                              height="20px"
+                              color="inherit"
+                            />
+                          </Button>
+                        </ButtonGroup>
+                      </Flex>
                     );
                   }
                   return (

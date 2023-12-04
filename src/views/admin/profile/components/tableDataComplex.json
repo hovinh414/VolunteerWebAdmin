@@ -1,0 +1,30 @@
+[
+  {
+    "avatar": "https://firebasestorage.googleapis.com/v0/b/bhx-clone.appspot.com/o/avatars%2F651d0055a528879d9d06ce27%2Fhienmau123651d0055a528879d9d06ce278197?alt=media",
+    "name": "Hiến máu nhân đạo",
+    "status": "Đã xác thực",
+    "date": "24/11/2023",
+    "role" : "Tổ chức"
+  },
+  {
+    "avatar": "https://firebasestorage.googleapis.com/v0/b/bhx-clone.appspot.com/o/avatars%2F6544e7c4084e4b75ef3d365e%2Ftinhnguyen1236544e7c4084e4b75ef3d365e1972?alt=media",
+    "name": "Sài gòn xanh",
+    "status": "Đã xác thực",
+    "date": "11/11/2023",
+    "role" : "Tổ chức"
+  },
+  {
+    "avatar": "https://firebasestorage.googleapis.com/v0/b/bhx-clone.appspot.com/o/avatars%2F6523fc90d176717dd38932b2%2Fhutech1236523fc90d176717dd38932b27591?alt=media",
+    "name": "Thiện nguyện Hutech khu B",
+    "status": "Đã xác thực",
+    "date": "05/01/2023",
+    "role" : "Tổ chức"
+  },
+  {
+    "avatar": "https://firebasestorage.googleapis.com/v0/b/bhx-clone.appspot.com/o/avatars%2F654c7328d5b88526dddf28e0%2Fthuan123654c7328d5b88526dddf28e07423?alt=media",
+    "name": "Nguyễn Thanh Thuận",
+    "status": "Đã xác thực",
+    "date": "12/07/2023",
+    "role" : "Cá nhân"
+  }
+]

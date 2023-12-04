@@ -21,45 +21,37 @@
 */
 
 // Chakra imports
-import { Box } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
-// Custom components
-import Banner from "views/admin/profile/components/Banner";
-
-// Assets
-import banner from "assets/img/auth/banner.png";
+import { Box, SimpleGrid } from "@chakra-ui/react";
+import ComplexTable from "views/admin/profile/components/ComplexTable";
+import { columnsDataComplex } from "views/admin/profile/components/columnsData";
+import tableDataComplex from "views/admin/profile/components/tableDataComplex.json";
+import React from "react";
+import Avatar1 from "assets/img/avatars/avatar1.png";
+import Avatar2 from "assets/img/avatars/avatar2.png";
+import Avatar3 from "assets/img/avatars/avatar3.png";
+import Avatar4 from "assets/img/avatars/avatar4.png";
 
 export default function Overview() {
-  const [name, setName] = useState("");
-  const [avatar, setAvatar] = useState("");
-  const [type, setType] = useState("");
-  const [follower, setFollower] = useState(0);
-  useEffect(() => {
-    const storedOrgResult = localStorage.getItem("orgResult");
-    const orgResult = JSON.parse(storedOrgResult);
-    setName(orgResult.fullname);
-    setAvatar(orgResult.avatar);
-    if (orgResult.type === "Organization") {
-      setFollower(orgResult.follower)
-      setType("Tổ chức");
-    } else {
-      setType("Quản trị viên");
-    }
-    
-  }, []);
   return (
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }} w={"100%"}>
-      {/* Main Fields */}
-      <Banner
-        gridArea="1 / 1 / 2 / 2"
-        banner={banner}
-        avatar={avatar}
-        name={name}
-        job={type}
-        posts="17"
-        followers={follower}
-        following="274"
-      />
+    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+      <SimpleGrid
+        mb="20px"
+        width={"200%"}
+        columns={{ sm: 1, md: 2 }}
+        spacing={{ base: "20px", xl: "20px" }}
+      >
+        <ComplexTable
+          columnsData={columnsDataComplex}
+          tableData={tableDataComplex}
+          bidders={[
+            Avatar1,
+            Avatar2,
+            Avatar3,
+            Avatar4,
+            Avatar1,
+          ]}
+        />
+      </SimpleGrid>
     </Box>
   );
 }
