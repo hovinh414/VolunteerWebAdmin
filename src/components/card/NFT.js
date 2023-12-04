@@ -15,7 +15,7 @@ import {
   ModalCloseButton,
   useDisclosure,
   Box,
-  IconButton,
+  Progress,
   Icon,
 } from "@chakra-ui/react";
 // Custom components
@@ -189,18 +189,7 @@ export default function NFT(props) {
                 fontWeight="800"
                 me="14px"
               >
-                Số tình nguyện viên: {participants}
-              </Text>
-              <Text
-                fontFamily="Roboto"
-                color={textColor}
-                fontSize={{
-                  base: "sm",
-                }}
-                fontWeight="800"
-                me="14px"
-              >
-                Số người tham gia: {totalUserJoin}
+                Số tình nguyện viên: {totalUserJoin} / {participants}
               </Text>
             </Flex>
             <Text
@@ -212,7 +201,7 @@ export default function NFT(props) {
               fontWeight="700"
               me="14px"
             >
-              Ngày hết hạn: {post.exprirationDate}.
+              Ngày hết hạn: {exprirationDate}.
             </Text>
             <Text
               fontFamily="Roboto"
@@ -333,6 +322,7 @@ export default function NFT(props) {
             >
               Ngày hết hạn: {exprirationDate}
             </Text>
+
             <Text
               fontFamily="Roboto"
               color={textColor}
