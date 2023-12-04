@@ -57,19 +57,23 @@ export const columnsDataColumns = [
 
 export const columnsDataComplex = [
   {
-    Header: "NAME",
+    Header: "Tên tổ chức",
     accessor: "name",
   },
   {
-    Header: "STATUS",
+    Header: "Trạng thái",
     accessor: "status",
   },
   {
-    Header: "DATE",
+    Header: "Ngày",
     accessor: "date",
   },
   {
-    Header: "PROGRESS",
-    accessor: "progress",
+    Header: "Minh chứng",
+    accessor: "avatar",
+  },
+  {
+    Header: "Thao tác",
+    accessor: "action",
   },
 ];

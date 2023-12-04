@@ -5,7 +5,7 @@ import {
   Box,
   Button,
   Flex,
-  Icon,
+  ButtonGroup,
   Image,
   Link,
   Text,
@@ -15,50 +15,64 @@ import {
 import Card from "components/card/Card.js";
 // Assets
 import React, { useState } from "react";
-import { IoHeart, IoHeartOutline } from "react-icons/io5";
-
+import Slider from "react-slick";
+import "@fontsource/roboto";
 export default function NFT(props) {
-  const { image, name, author, bidders, download, currentbid } = props;
+  const {
+    images,
+    name,
+    createDate,
+    bidders,
+    download,
+    currentbid,
+    avatar,
+    participants,
+    totalUserJoin,
+    exprirationDate,
+  } = props;
   const [like, setLike] = useState(false);
   const textColor = useColorModeValue("navy.700", "white");
   const textColorBid = useColorModeValue("brand.500", "white");
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   return (
-    <Card p='20px'>
-      <Flex direction={{ base: "column" }} justify='center'>
-        <Box mb={{ base: "20px", "2xl": "20px" }} position='relative'>
-          <Image
-            src={image}
-            w={{ base: "100%", "3xl": "100%" }}
-            h={{ base: "100%", "3xl": "100%" }}
-            borderRadius='20px'
-          />
-          <Button
-            position='absolute'
-            bg='white'
+    <Card p="20px">
+      {/* <Button
+            position="absolute"
+            bg="white"
             _hover={{ bg: "whiteAlpha.900" }}
             _active={{ bg: "white" }}
             _focus={{ bg: "white" }}
-            p='0px !important'
-            top='14px'
-            right='14px'
-            borderRadius='50%'
-            minW='36px'
-            h='36px'
+            p="0px !important"
+            top="14px"
+            right="14px"
+            borderRadius="50%"
+            minW="36px"
+            h="36px"
             onClick={() => {
               setLike(!like);
-            }}>
+            }}
+          >
             <Icon
-              transition='0.2s linear'
-              w='20px'
-              h='20px'
+              transition="0.2s linear"
+              w="20px"
+              h="20px"
               as={like ? IoHeart : IoHeartOutline}
-              color='brand.500'
+              color="brand.500"
             />
-          </Button>
+          </Button> */}
+      <Flex direction={{ base: "column" }} justify="center">
+        <Box mb="10px">
+          <Image src={images} w={"100%"} h={"180px"} borderRadius="20px" />
         </Box>
-        <Flex flexDirection='column' justify='space-between' h='100%'>
+        <Flex flexDirection="column" justify="space-between" h="100%">
           <Flex
-            justify='space-between'
+            justify="space-between"
             direction={{
               base: "row",
               md: "column",
@@ -66,37 +80,85 @@ export default function NFT(props) {
               xl: "column",
               "2xl": "row",
             }}
-            mb='auto'>
-            <Flex direction='column'>
+            mb="auto"
+          >
+            <Flex
+              direction="row"
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
               <Text
+                fontFamily="Roboto"
                 color={textColor}
                 fontSize={{
-                  base: "xl",
-                  md: "lg",
-                  lg: "lg",
-                  xl: "lg",
+                  base: "lg",
+                  md: "md",
+                  lg: "md",
+                  xl: "md",
                   "2xl": "md",
                   "3xl": "lg",
                 }}
-                mb='5px'
-                fontWeight='bold'
-                me='14px'>
+                fontWeight="bold"
+                me="14px"
+              >
                 {name}
               </Text>
-              <Text
-                color='secondaryGray.600'
-                fontSize={{
-                  base: "sm",
-                }}
-                fontWeight='400'
-                me='14px'>
-                {author}
-              </Text>
+              <Image
+                mx="auto"
+                src={avatar}
+                h="35px"
+                w="35px"
+                borderRadius={"50%"}
+              />
             </Flex>
-            <AvatarGroup
+            <Text
+              fontFamily="Roboto"
+              color={textColor}
+              fontSize={{
+                base: "sm",
+              }}
+              fontWeight="400"
+              me="14px"
+            >
+              Ngày đăng: {createDate}
+            </Text>
+            <Text
+              fontFamily="Roboto"
+              color={textColor}
+              fontSize={{
+                base: "sm",
+              }}
+              fontWeight="400"
+              me="14px"
+            >
+              Ngày hết hạn: {exprirationDate}
+            </Text>
+            <Text
+              fontFamily="Roboto"
+              color={textColor}
+              fontSize={{
+                base: "sm",
+              }}
+              fontWeight="400"
+              me="14px"
+            >
+              Số tình nguyện viên: {participants}
+            </Text>
+            <Text
+              fontFamily="Roboto"
+              color={textColor}
+              fontSize={{
+                base: "sm",
+              }}
+              fontWeight="400"
+              me="14px"
+            >
+              Số người tham gia: {totalUserJoin}
+            </Text>
+            {/* <AvatarGroup
               max={3}
               color={textColorBid}
-              size='sm'
+              size="sm"
               mt={{
                 base: "0px",
                 md: "10px",
@@ -104,15 +166,22 @@ export default function NFT(props) {
                 xl: "10px",
                 "2xl": "0px",
               }}
-              fontSize='12px'>
+              fontSize="12px"
+            >
               {bidders.map((avt, key) => (
                 <Avatar key={key} src={avt} />
               ))}
-            </AvatarGroup>
+            </AvatarGroup> */}
           </Flex>
+          <Text
+            fontFamily="Roboto"
+            fontWeight="700"
+            fontSize="sm"
+            color={textColorBid}
+          >
+            {currentbid}
+          </Text>
           <Flex
-            align='start'
-            justify='space-between'
             direction={{
               base: "row",
               md: "column",
@@ -120,30 +189,35 @@ export default function NFT(props) {
               xl: "column",
               "2xl": "row",
             }}
-            mt='25px'>
-            <Text fontWeight='700' fontSize='sm' color={textColorBid}>
-              Current Bid: {currentbid}
-            </Text>
-            <Link
-              href={download}
+            align="center"
+            justify="space-between"
+          >
+            <Flex
               mt={{
                 base: "0px",
                 md: "10px",
                 lg: "0px",
                 xl: "10px",
                 "2xl": "0px",
-              }}>
-              <Button
-                variant='darkBrand'
-                color='white'
-                fontSize='sm'
-                fontWeight='500'
-                borderRadius='70px'
-                px='24px'
-                py='5px'>
-                Place Bid
-              </Button>
-            </Link>
+              }}
+              flexDirection={"row"}
+              align="center"
+              justify="space-between"
+            >
+              <ButtonGroup variant="solid" spacing="3">
+                <Button fontFamily="Roboto" size="sm" colorScheme="brandScheme">
+                  Xem chi tiết
+                </Button>
+                <Button
+                  fontFamily="Roboto"
+                  size="sm"
+                  backgroundColor="gray.700"
+                  color="#fff"
+                >
+                  Khóa bài viết
+                </Button>
+              </ButtonGroup>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>

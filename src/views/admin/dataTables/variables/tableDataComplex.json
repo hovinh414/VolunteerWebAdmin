@@ -1,26 +1,27 @@
+
 [
   {
-    "name":"Marketplace",
-    "status": "Approved",
-    "date": "24.Jan.2021",
-    "progress": 75.5  
+    "name":"Hiến máu nhân đạo",
+    "status": "Chờ xác nhận",
+    "date": "24/11/2023",
+    "avatar": "../../../../assets/img/avatars/avatar2.png"
   },
   {
-    "name":"Marketplace",
-    "status": "Disable",
+    "name":"Sài gòn xanh",
+    "status": "Chờ xác nhận",
     "date": "30.Dec.2021",
-    "progress": 25.5  
+    "avatar": 25.5  
   },
   {
-    "name":"Marketplace",
-    "status": "Error",
+    "name":"Hiến máu nhân đạo",
+    "status": "Chờ xác nhận",
     "date": "20.May.2021",
-    "progress": 90  
+    "avatar": 90  
   },
   {
-    "name":"Marketplace",
-    "status": "Approved",
+    "name":"Hội chữ thập đỏ",
+    "status": "Chờ xác nhận",
     "date": "12.Jul.2021",
-    "progress": 50.5  
+    "avatar": 50.5  
   }
 ]
