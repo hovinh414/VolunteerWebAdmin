@@ -1,5 +1,3 @@
-
-
 export const columnsDataComplex = [
   {
     Header: "Ảnh đại diện",
@@ -10,10 +8,6 @@ export const columnsDataComplex = [
     accessor: "name",
   },
   {
-    Header: "Loại tài khoản",
-    accessor: "role",
-  },
-  {
     Header: "Trạng thái",
     accessor: "status",
   },
@@ -22,7 +16,23 @@ export const columnsDataComplex = [
     accessor: "date",
   },
   {
+    Header: "Loại tài khoản",
+    accessor: "role",
+  },
+  {
     Header: "Thao tác",
     accessor: "action",
+  },
+  {
+    Header: "Email",
+    accessor: "email",
+  },
+  {
+    Header: "Phone",
+    accessor: "phone",
+  },
+  {
+    Header: "Address",
+    accessor: "address",
   },
 ];

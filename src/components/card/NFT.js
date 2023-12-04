@@ -87,10 +87,6 @@ export default function NFT(props) {
     nextArrow: <CustomNextArrow />,
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const formatDate = (dateString) => {
-    const formattedDate = new Date(dateString).toLocaleDateString("en-GB");
-    return formattedDate;
-  };
   const [showFullContent, setShowFullContent] = useState(false);
   const toggleShowFullContent = () => {
     setShowFullContent(!showFullContent);
@@ -244,7 +240,6 @@ export default function NFT(props) {
         <Slider {...settings}>
           {images.map((image, index) => (
             <Image
-              onClick={onOpen}
               key={index}
               src={image}
               w="100%"
@@ -271,46 +266,38 @@ export default function NFT(props) {
             }}
             mb="auto"
           >
-            <Flex
-              direction="row"
-              justifyContent={"center"}
-              alignItems={"center"}
-            >
-              <Text
-                fontFamily="Roboto"
-                color={textColor}
-                fontSize={{
-                  base: "lg",
-                  md: "md",
-                  lg: "md",
-                  xl: "md",
-                  "2xl": "md",
-                  "3xl": "lg",
-                }}
-                fontWeight="bold"
-                me="14px"
-              >
-                {name}
-              </Text>
+            <Flex mt={3} direction={"row"} alignItems={"center"}>
               <Image
-                mx="auto"
+                mr={2}
                 src={avatar}
                 h="35px"
                 w="35px"
                 borderRadius={"50%"}
               />
+              <Flex direction={"column"} justifyContent={"center"}>
+                <Text
+                  fontFamily="Roboto"
+                  color={textColor}
+                  fontSize={15}
+                  fontWeight="bold"
+                  me="14px"
+                >
+                  {name}
+                </Text>
+                <Text
+                  textAlign={"justify"}
+                  fontFamily="Roboto"
+                  color={textColor}
+                  fontSize={{
+                    base: "xs",
+                  }}
+                  fontWeight="bold"
+                  me="14px"
+                >
+                  {createDate}
+                </Text>
+              </Flex>
             </Flex>
-            <Text
-              fontFamily="Roboto"
-              color={textColor}
-              fontSize={{
-                base: "sm",
-              }}
-              fontWeight="400"
-              me="14px"
-            >
-              Ngày đăng: {createDate}
-            </Text>
             <Text
               fontFamily="Roboto"
               color={textColor}
