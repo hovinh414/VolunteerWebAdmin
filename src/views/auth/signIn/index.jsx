@@ -1,25 +1,3 @@
-/* eslint-disable */
-/*!
-  _   _  ___  ____  ___ ________  _   _   _   _ ___   
- | | | |/ _ \|  _ \|_ _|__  / _ \| \ | | | | | |_ _| 
- | |_| | | | | |_) || |  / / | | |  \| | | | | || | 
- |  _  | |_| |  _ < | | / /| |_| | |\  | | |_| || |
- |_| |_|\___/|_| \_\___/____\___/|_| \_|  \___/|___|
-                                                                                                                                                                                                                                                                                                                                       
-=========================================================
-* Horizon UI - v1.1.0
-=========================================================
-
-* Product Page: https://www.horizon-ui.com/
-* Copyright 2023 Horizon UI (https://www.horizon-ui.com/)
-
-* Designed and Coded by Simmmple
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 
 import React, { useState, useEffect } from "react";
 import { NavLink, useHistory } from "react-router-dom";
@@ -38,10 +16,6 @@ import {
   InputRightElement,
   Text,
   useColorModeValue,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
 } from "@chakra-ui/react";
 // Custom components
 import axios from "axios";
@@ -265,7 +239,7 @@ function SignIn() {
                 placeholder="Mật khẩu bao gồm 8 ký tự, chữ in hoa và chữ số"
                 mb="24px"
                 size="lg"
-                type={show ? "password" : "text"}
+                type={show ? "text" : "password"}
                 variant="auth"
                 onChange={(event) => {
                   const newPass = event.target.value;
@@ -276,7 +250,7 @@ function SignIn() {
                 <Icon
                   color={textColorSecondary}
                   _hover={{ cursor: "pointer" }}
-                  as={show ? RiEyeCloseLine : MdOutlineRemoveRedEye}
+                  as={show ? MdOutlineRemoveRedEye : RiEyeCloseLine}
                   onClick={handleClick}
                 />
               </InputRightElement>

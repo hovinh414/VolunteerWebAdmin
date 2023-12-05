@@ -1,70 +1,83 @@
-/*!
-  _   _  ___  ____  ___ ________  _   _   _   _ ___   
- | | | |/ _ \|  _ \|_ _|__  / _ \| \ | | | | | |_ _| 
- | |_| | | | | |_) || |  / / | | |  \| | | | | || | 
- |  _  | |_| |  _ < | | / /| |_| | |\  | | |_| || |
- |_| |_|\___/|_| \_\___/____\___/|_| \_|  \___/|___|
-                                                                                                                                                                                                                                                                                                                                       
-=========================================================
-* Horizon UI - v1.1.0
-=========================================================
-
-* Product Page: https://www.horizon-ui.com/
-* Copyright 2023 Horizon UI (https://www.horizon-ui.com/)
-
-* Designed and Coded by Simmmple
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-// Chakra imports
-import { Box, Grid } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
-// Custom components
-import Banner from "views/admin/profile/components/Banner";
-import General from "views/admin/profile/components/General";
-import Notifications from "views/admin/profile/components/Notifications";
-import Projects from "views/admin/profile/components/Projects";
-import Storage from "views/admin/profile/components/Storage";
-import Upload from "views/admin/profile/components/Upload";
-
-// Assets
-import banner from "assets/img/auth/banner.png";
+import { Box, SimpleGrid } from "@chakra-ui/react";
+import ComplexTable from "views/admin/profile/components/ComplexTable";
+import { columnsDataComplex } from "views/admin/profile/components/columnsData";
+import tableDataComplex from "views/admin/profile/components/tableDataComplex.json";
+import React from "react";
+import Avatar1 from "assets/img/avatars/avatar1.png";
+import Avatar2 from "assets/img/avatars/avatar2.png";
+import Avatar3 from "assets/img/avatars/avatar3.png";
+import Avatar4 from "assets/img/avatars/avatar4.png";
 
 export default function Overview() {
-  const [name, setName] = useState("");
-  const [avatar, setAvatar] = useState("");
-  const [type, setType] = useState("");
-  const [follower, setFollower] = useState(0);
-  useEffect(() => {
-    const storedOrgResult = localStorage.getItem("orgResult");
-    const orgResult = JSON.parse(storedOrgResult);
-    setName(orgResult.fullname);
-    setAvatar(orgResult.avatar);
-    if (orgResult.type === "Organization") {
-      setFollower(orgResult.follower)
-      setType("Tổ chức");
-    } else {
-      setType("Quản trị viên");
-    }
-    
-  }, []);
+  const users = [
+    {
+      avatar:
+        "https://firebasestorage.googleapis.com/v0/b/bhx-clone.appspot.com/o/avatars%2F651d0055a528879d9d06ce27%2Fhienmau123651d0055a528879d9d06ce278197?alt=media",
+      status: "Đã xác thực",
+      name: "Hiến máu nhân đạo",
+      date: "24/11/2023",
+      role: "Tổ chức",
+      email: "hienmau123@gmail.com",
+      phone: "0967626483",
+      address:
+        "355 Ung Văn Khiêm, Phường 25, Quận Bình Thạnh, Thành phố Hồ Chí Minh",
+    },
+    {
+      avatar:
+        "https://firebasestorage.googleapis.com/v0/b/bhx-clone.appspot.com/o/avatars%2F6544e7c4084e4b75ef3d365e%2Ftinhnguyen1236544e7c4084e4b75ef3d365e1972?alt=media",
+      status: "Đã xác thực",
+      name: "Sài Gòn Xanh",
+
+      date: "11/11/2023",
+      role: "Tổ chức",
+      email: "saigonxanh@gmail.com",
+      phone: "0967441256",
+      address: "3441 Phạm Thế Hiển, Phường 7, Quận 8, Thành phố Hồ Chí Minh",
+    },
+    {
+      avatar:
+        "https://firebasestorage.googleapis.com/v0/b/bhx-clone.appspot.com/o/avatars%2F6523fc90d176717dd38932b2%2Fhutech1236523fc90d176717dd38932b27591?alt=media",
+      name: "Thiện Nguyện Hutech Khu B",
+      status: "Đã xác thực",
+      date: "05/01/2023",
+      role: "Tổ chức",
+      email: "hutech123@gmail.com",
+      phone: "0315489447",
+      address:
+        "475B Điện Biên Phủ, Phường 25, Quận Bình Thạnh, Thành phố Hồ Chí Minh",
+    },
+    {
+      avatar:
+        "https://firebasestorage.googleapis.com/v0/b/bhx-clone.appspot.com/o/avatars%2F654c7328d5b88526dddf28e0%2Fthuan123654c7328d5b88526dddf28e07423?alt=media",
+      name: "Nguyễn Thanh Thuận",
+      status: "Đã xác thực",
+      date: "12/07/2023",
+      role: "Cá nhân",
+      email: "thuan123@gmail.com",
+      phone: "0383138060",
+      address:
+        "25/27 Đường 6, Phường Tăng Nhơn Phú B, Quận 9, Thành phố Hồ Chí Minh",
+    },
+  ];
   return (
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }} w={"100%"}>
-      {/* Main Fields */}
-      <Banner
-        gridArea="1 / 1 / 2 / 2"
-        banner={banner}
-        avatar={avatar}
-        name={name}
-        job={type}
-        posts="17"
-        followers={follower}
-        following="274"
-      />
+    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+      <SimpleGrid
+        mb="20px"
+        width={{
+          base: "125%",
+          md: "150%",
+          lg: "175%",
+          xl: "200%",
+        }}
+        columns={{ sm: 1, md: 2 }}
+        spacing={{ base: "20px", xl: "20px" }}
+      >
+        <ComplexTable
+          columnsData={columnsDataComplex}
+          tableData={users}
+          bidders={[Avatar1, Avatar2, Avatar3, Avatar4, Avatar1]}
+        />
+      </SimpleGrid>
     </Box>
   );
 }

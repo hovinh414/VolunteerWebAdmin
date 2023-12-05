@@ -6,8 +6,7 @@ import {
   MdPerson,
   MdHome,
   MdLock,
-  MdOutlineShoppingCart,
-  MdSupervisedUserCircle,
+  MdOutlineSignpost,
 } from "react-icons/md";
 
 // Admin Imports
@@ -28,12 +27,12 @@ const routes = [
     component: MainDashboard,
   },
   {
-    name: "Quản lý tài khoản",
+    name: "Quản lý bài viết",
     layout: "/admin",
-    path: "/nft-marketplace",
+    path: "/posts",
     icon: (
       <Icon
-        as={MdSupervisedUserCircle}
+        as={MdOutlineSignpost}
         width='20px'
         height='20px'
         color='inherit'
@@ -46,13 +45,13 @@ const routes = [
     name: "Quản lý minh chứng",
     layout: "/admin",
     icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
-    path: "/data-tables",
+    path: "/authenticate",
     component: DataTables,
   },
   {
-    name: "Thông tin cá nhân",
+    name: "Quản lý tài khoản",
     layout: "/admin",
-    path: "/profile",
+    path: "/users",
     icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
     component: Profile,
   },
@@ -60,7 +59,7 @@ const routes = [
     name: "" ,
     layout: "/auth",
     path: "/sign-in",
-    icon: <Icon as={MdLock} width='20px' height='20px' color='#fff' />,
+    icon: <Icon as={MdLock} color='#fff' />,
     component: SignInCentered,
   },
 
