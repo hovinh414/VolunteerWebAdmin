@@ -15,7 +15,6 @@ import {
   ModalCloseButton,
   useDisclosure,
   Box,
-  Progress,
   Icon,
 } from "@chakra-ui/react";
 // Custom components
@@ -85,6 +84,7 @@ export default function NFT(props) {
     slidesToScroll: 1,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
+    
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showFullContent, setShowFullContent] = useState(false);
@@ -258,11 +258,10 @@ export default function NFT(props) {
           <Flex
             justify="space-between"
             direction={{
-              base: "row",
+              base: "column",
               md: "column",
-              lg: "row",
+              lg: "column",
               xl: "column",
-              "2xl": "row",
             }}
             mb="auto"
           >
@@ -332,74 +331,43 @@ export default function NFT(props) {
             >
               Số người tham gia: {totalUserJoin}
             </Text>
-            {/* <AvatarGroup
-              max={3}
+            <Text
+              fontFamily="Roboto"
+              fontWeight="700"
+              fontSize="sm"
               color={textColorBid}
-              size="sm"
-              mt={{
-                base: "0px",
-                md: "10px",
-                lg: "0px",
-                xl: "10px",
-                "2xl": "0px",
-              }}
-              fontSize="12px"
             >
-              {bidders.map((avt, key) => (
-                <Avatar key={key} src={avt} />
-              ))}
-            </AvatarGroup> */}
+              {currentbid}
+            </Text>
           </Flex>
-          <Text
-            fontFamily="Roboto"
-            fontWeight="700"
-            fontSize="sm"
-            color={textColorBid}
-          >
-            {currentbid}
-          </Text>
+
           <Flex
             direction={{
               base: "row",
-              md: "column",
+              md: "row",
               lg: "row",
-              xl: "column",
-              "2xl": "row",
+              xl: "row",
             }}
+            mt={3}
             align="center"
             justify="space-between"
           >
-            <Flex
-              mt={{
-                base: "0px",
-                md: "10px",
-                lg: "0px",
-                xl: "10px",
-                "2xl": "0px",
-              }}
-              flexDirection={"row"}
-              align="center"
-              justify="space-between"
+            <Button
+              onClick={onOpen}
+              fontFamily="Roboto"
+              size="sm"
+              colorScheme="brandScheme"
             >
-              <ButtonGroup variant="solid" spacing="3">
-                <Button
-                  onClick={onOpen}
-                  fontFamily="Roboto"
-                  size="sm"
-                  colorScheme="brandScheme"
-                >
-                  Xem chi tiết
-                </Button>
-                <Button
-                  fontFamily="Roboto"
-                  size="sm"
-                  backgroundColor="gray.700"
-                  color="#fff"
-                >
-                  Khóa bài viết
-                </Button>
-              </ButtonGroup>
-            </Flex>
+              Xem chi tiết
+            </Button>
+            <Button
+              fontFamily="Roboto"
+              size="sm"
+              backgroundColor="gray.700"
+              color="#fff"
+            >
+              Khóa bài viết
+            </Button>
           </Flex>
         </Flex>
       </Flex>

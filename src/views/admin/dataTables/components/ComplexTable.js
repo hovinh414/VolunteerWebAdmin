@@ -13,7 +13,18 @@ import {
   ButtonGroup,
   Avatar,
   AvatarGroup,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Box,
+  Image,
 } from "@chakra-ui/react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import React, { useMemo, useState, useEffect } from "react";
 import {
   useGlobalFilter,
@@ -25,6 +36,9 @@ import {
 // Custom components
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "@fontsource/roboto";
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
@@ -34,6 +48,7 @@ export default function ColumnsTable(props) {
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
   const [imageAuthenticate, setImageAuthenticate] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     const storedOrgResult = localStorage.getItem("orgResult");
     const orgResult = JSON.parse(storedOrgResult);
@@ -58,7 +73,51 @@ export default function ColumnsTable(props) {
     initialState,
   } = tableInstance;
   initialState.pageSize = 5;
+  const CustomPrevArrow = (props) => {
+    const { onClick } = props;
+    return (
+      <Box
+        zIndex={2}
+        onClick={onClick}
+        pos="absolute"
+        left="-25px"
+        top="50%"
+        transform="translateY(-50%)"
+      >
+        <Icon as={ChevronLeftIcon} width="25px" height="25px" color="inherit" />
+      </Box>
+    );
+  };
 
+  const CustomNextArrow = (props) => {
+    const { onClick } = props;
+    return (
+      <Box
+        zIndex={2}
+        onClick={onClick}
+        pos="absolute"
+        right="-25px"
+        top="50%"
+        transform="translateY(-50%)"
+      >
+        <Icon
+          as={ChevronRightIcon}
+          width="25px"
+          height="25px"
+          color="inherit"
+        />
+      </Box>
+    );
+  };
+  const settings = {
+    infinite: true,
+    dots: true,
+    speed: 300,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
+  };
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
   return (
@@ -68,6 +127,51 @@ export default function ColumnsTable(props) {
       overflowX={{ sm: "scroll", lg: "hidden" }}
       width={"100%"}
     >
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader fontFamily="Roboto">Thông tin tài khoản</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Slider {...settings}>
+              {bidders.map((image, index) => (
+                <Image
+                  fit={"contain"}
+                  key={index}
+                  src={image}
+                  w="100%"
+                  h="100%"
+                  borderRadius="20px"
+                />
+              ))}
+            </Slider>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              fontFamily="Roboto"
+              size="sm"
+              mr={3}
+              colorScheme="brandScheme"
+              onClick={onClose}
+            >
+              Xác nhận
+            </Button>
+            <Button
+              fontFamily="Roboto"
+              size="sm"
+              backgroundColor="gray.700"
+              color="#fff"
+              variant="ghost"
+              _hover={{
+                backgroundColor: "gray.600",
+              }}
+            >
+              Từ chối
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Flex px="25px" justify="space-between" mb="20px" align="center">
         <Text
           fontFamily="Roboto"
@@ -105,7 +209,7 @@ export default function ColumnsTable(props) {
             </Tr>
           ))}
         </Thead>
-        <Tbody {...getTableBodyProps()}>
+        <Tbody onClick={onOpen} {...getTableBodyProps()}>
           {page.map((row, index) => {
             prepareRow(row);
             return (
@@ -206,8 +310,9 @@ export default function ColumnsTable(props) {
                         <Button
                           fontFamily="Roboto"
                           size="sm"
-                          backgroundColor="gray.500"
+                          backgroundColor="gray.700"
                           color="#fff"
+                          variant="ghost"
                           _hover={{
                             backgroundColor: "gray.600",
                           }}

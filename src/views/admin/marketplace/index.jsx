@@ -9,17 +9,12 @@ import {
   useColorModeValue,
   SimpleGrid,
   CircularProgress,
-  CircularProgressLabel,
 } from "@chakra-ui/react";
 
 // Custom components
 import NFT from "components/card/NFT";
 import "@fontsource/roboto";
 import axios from "axios";
-import Avatar1 from "assets/img/avatars/avatar1.png";
-import Avatar2 from "assets/img/avatars/avatar2.png";
-import Avatar3 from "assets/img/avatars/avatar3.png";
-import Avatar4 from "assets/img/avatars/avatar4.png";
 export default function Marketplace() {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -155,7 +150,15 @@ export default function Marketplace() {
                 </Flex>
               </SimpleGrid>
             ) : (
-              <SimpleGrid columns={{ base: 1, md: 4 }} gap="20px">
+              <SimpleGrid
+                columns={{
+                  base: 1,
+                  md: 2,
+                  lg: 3,
+                  xl: 4,
+                }}
+                gap="20px"
+              >
                 {posts.map((post, index) => (
                   <NFT
                     key={index}
@@ -163,16 +166,6 @@ export default function Marketplace() {
                     avatar={post.ownerAvatar}
                     name={post.ownerDisplayname}
                     createDate={formatDate(post.createdAt)}
-                    bidders={[
-                      Avatar1,
-                      Avatar2,
-                      Avatar3,
-                      Avatar4,
-                      Avatar1,
-                      Avatar1,
-                      Avatar1,
-                      Avatar1,
-                    ]}
                     images={post.media}
                     currentbid={
                       post.type === "activity" || post.type === "Activity"

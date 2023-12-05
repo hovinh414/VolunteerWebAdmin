@@ -19,7 +19,8 @@ export default function Overview() {
       role: "Tổ chức",
       email: "hienmau123@gmail.com",
       phone: "0967626483",
-      address: "355 Ung Văn Khiêm, Phường 25, Quận Bình Thạnh, Thành phố Hồ Chí Minh"
+      address:
+        "355 Ung Văn Khiêm, Phường 25, Quận Bình Thạnh, Thành phố Hồ Chí Minh",
     },
     {
       avatar:
@@ -31,7 +32,7 @@ export default function Overview() {
       role: "Tổ chức",
       email: "saigonxanh@gmail.com",
       phone: "0967441256",
-      address: "3441 Phạm Thế Hiển, Phường 7, Quận 8, Thành phố Hồ Chí Minh"
+      address: "3441 Phạm Thế Hiển, Phường 7, Quận 8, Thành phố Hồ Chí Minh",
     },
     {
       avatar:
@@ -42,7 +43,8 @@ export default function Overview() {
       role: "Tổ chức",
       email: "hutech123@gmail.com",
       phone: "0315489447",
-      address: "475B Điện Biên Phủ, Phường 25, Quận Bình Thạnh, Thành phố Hồ Chí Minh"
+      address:
+        "475B Điện Biên Phủ, Phường 25, Quận Bình Thạnh, Thành phố Hồ Chí Minh",
     },
     {
       avatar:
@@ -53,14 +55,20 @@ export default function Overview() {
       role: "Cá nhân",
       email: "thuan123@gmail.com",
       phone: "0383138060",
-      address: "25/27 Đường 6, Phường Tăng Nhơn Phú B, Quận 9, Thành phố Hồ Chí Minh"
+      address:
+        "25/27 Đường 6, Phường Tăng Nhơn Phú B, Quận 9, Thành phố Hồ Chí Minh",
     },
   ];
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <SimpleGrid
         mb="20px"
-        width={"200%"}
+        width={{
+          base: "125%",
+          md: "150%",
+          lg: "175%",
+          xl: "200%",
+        }}
         columns={{ sm: 1, md: 2 }}
         spacing={{ base: "20px", xl: "20px" }}
       >
