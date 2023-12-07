@@ -47,12 +47,10 @@ export default function ColumnsTable(props) {
   const textColorBid = useColorModeValue("brand.500", "white");
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
-  const [imageAuthenticate, setImageAuthenticate] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
-    const storedOrgResult = localStorage.getItem("orgResult");
+    const storedOrgResult = localStorage.getItem("result");
     const orgResult = JSON.parse(storedOrgResult);
-    setImageAuthenticate(orgResult.imageAuthenticate);
   }, []);
   const tableInstance = useTable(
     {
@@ -130,7 +128,7 @@ export default function ColumnsTable(props) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontFamily="Roboto">Thông tin tài khoản</ModalHeader>
+          <ModalHeader fontFamily="Roboto">Chi tiết minh chứng</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Slider {...settings}>

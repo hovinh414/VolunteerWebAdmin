@@ -18,6 +18,7 @@ import React, { useState, useEffect } from "react";
 import routes from "routes.js";
 import { ThemeEditor } from "./ThemeEditor";
 import "@fontsource/roboto";
+import admin from "assets/img/admin.png";
 export default function HeaderLinks(props) {
   const { secondary } = props;
   // Chakra Color Mode
@@ -35,12 +36,11 @@ export default function HeaderLinks(props) {
     localStorage.clear();
     window.location.href = "/auth/sign-in";
   };
-
   useEffect(() => {
-    const storedOrgResult = localStorage.getItem("orgResult");
-    const orgResult = JSON.parse(storedOrgResult);
-    setName(orgResult.fullname);
-    setAvatar(orgResult.avatar);
+    const acresult = localStorage.getItem("result");
+    const result = JSON.parse(acresult);
+    setName(result.fullname);
+    setAvatar(result.avatar);
   }, []);
   return (
     <Flex
@@ -58,7 +58,7 @@ export default function HeaderLinks(props) {
         me="10px"
         borderRadius="30px"
       />
-      
+
       <SidebarResponsive routes={routes} />
       {/* <Menu>
         <MenuButton p="0px">
@@ -197,7 +197,7 @@ export default function HeaderLinks(props) {
       <Menu>
         <MenuButton p="0px">
           <Image
-            src={avatar}
+            src={avatar ? avatar : admin}
             _hover={{ cursor: "pointer" }}
             color="white"
             name="Adela Parkson"
@@ -215,7 +215,6 @@ export default function HeaderLinks(props) {
           borderRadius="20px"
           bg={menuBg}
           border="none"
-          
         >
           <Flex w="100%" mb="0px">
             <Text

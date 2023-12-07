@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 // Chakra imports
@@ -71,7 +70,7 @@ function SignIn() {
     try {
       const res = await axios({
         method: "post",
-        url: "http://localhost:3000/api/v1/login",
+        url: "http://localhost:3000/api/v1/login/admin",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Accept: "application/json",
@@ -83,27 +82,31 @@ function SignIn() {
       });
 
       if (res.data.status === "SUCCESS") {
-        console.log(res.data.data.orgResult);
+        // Kiểm tra loại kết quả dựa trên quyền hạn
+        if (res.data.data.orgResult) {
+          localStorage.setItem(
+            "result",
+            JSON.stringify(res.data.data.orgResult)
+          );
+        } else if (res.data.data.adminResult) {
+          localStorage.setItem(
+            "result",
+            JSON.stringify(res.data.data.adminResult)
+          );
+        } else if (res.data.data.superAdResult) {
+          localStorage.setItem(
+            "result",
+            JSON.stringify(res.data.data.superAdResult)
+          );
+        }
 
-        // if (res.data.data.orgResult.type === "Admin") {
-        localStorage.setItem(
-          "orgResult",
-          JSON.stringify(res.data.data.orgResult)
-        );
+        // Lưu refreshToken vào localStorage
         localStorage.setItem(
           "token",
           JSON.stringify(res.data.data.refreshToken)
         );
-        toast.success("Hi👋 " + res.data.data.orgResult.fullname, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+
+        // Chuyển hướng đến đường dẫn "/admin/default"
         history.push("/admin/default");
       }
     } catch (error) {

@@ -28,7 +28,7 @@ export default function Marketplace() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const accessToken = JSON.parse(token);
-    const storedOrgResult = localStorage.getItem("orgResult");
+    const storedOrgResult = localStorage.getItem("result");
     const orgResult = JSON.parse(storedOrgResult);
     setOrgId(orgResult._id);
     setToken(accessToken);

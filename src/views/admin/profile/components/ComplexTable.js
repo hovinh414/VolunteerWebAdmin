@@ -51,6 +51,7 @@ import Card from "components/card/Card";
 import MainMenu from "components/menu/MainMenu";
 import "@fontsource/roboto";
 import banner from "assets/img/auth/banner.png";
+
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 export default function Usertables(props) {
@@ -60,9 +61,8 @@ export default function Usertables(props) {
   const data = useMemo(() => tableData, [tableData]);
   const [imageAuthenticate, setImageAuthenticate] = useState([]);
   useEffect(() => {
-    const storedOrgResult = localStorage.getItem("orgResult");
+    const storedOrgResult = localStorage.getItem("result");
     const orgResult = JSON.parse(storedOrgResult);
-    setImageAuthenticate(orgResult.imageAuthenticate);
   }, []);
   const tableInstance = useTable(
     {
