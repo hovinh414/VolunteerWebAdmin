@@ -182,7 +182,7 @@ function SignIn() {
       console.log(error.response);
     } finally {
       
-      window.location.reload();
+      history.go(0);
       
     }
   };
