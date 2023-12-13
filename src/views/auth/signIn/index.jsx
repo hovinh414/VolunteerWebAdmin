@@ -84,30 +84,89 @@ function SignIn() {
       if (res.data.status === "SUCCESS") {
         // Kiểm tra loại kết quả dựa trên quyền hạn
         if (res.data.data.orgResult) {
-          localStorage.setItem(
-            "result",
-            JSON.stringify(res.data.data.orgResult)
-          );
+          if (!res.data.data.orgResult.isEnable) {
+            toast.warning(
+              "Tài khoản của bạn đã bị khóa vui lòng liên hệ quản trị viên để mở khóa!",
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+            return;
+          } else {
+            localStorage.setItem(
+              "result",
+              JSON.stringify(res.data.data.orgResult)
+            );
+            localStorage.setItem(
+              "token",
+              JSON.stringify(res.data.data.refreshToken)
+            );
+            history.push("/admin/default");
+          }
         } else if (res.data.data.adminResult) {
-          localStorage.setItem(
-            "result",
-            JSON.stringify(res.data.data.adminResult)
-          );
+          if (!res.data.data.adminResult.isEnable) {
+            toast.warning(
+              "Tài khoản của bạn đã bị khóa vui lòng liên hệ quản trị viên để mở khóa!",
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+            return;
+          } else {
+            localStorage.setItem(
+              "result",
+              JSON.stringify(res.data.data.adminResult)
+            );
+            localStorage.setItem(
+              "token",
+              JSON.stringify(res.data.data.refreshToken)
+            );
+            history.push("/admin/default");
+          }
         } else if (res.data.data.superAdResult) {
-          localStorage.setItem(
-            "result",
-            JSON.stringify(res.data.data.superAdResult)
-          );
+          if (!res.data.data.superAdResult.isEnable) {
+            toast.warning(
+              "Tài khoản của bạn đã bị khóa vui lòng liên hệ quản trị viên để mở khóa!",
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+            return;
+          } else {
+            localStorage.setItem(
+              "result",
+              JSON.stringify(res.data.data.superAdResult)
+            );
+            localStorage.setItem(
+              "token",
+              JSON.stringify(res.data.data.refreshToken)
+            );
+            history.push("/admin/default");
+          }
         }
 
         // Lưu refreshToken vào localStorage
-        localStorage.setItem(
-          "token",
-          JSON.stringify(res.data.data.refreshToken)
-        );
-
-        // Chuyển hướng đến đường dẫn "/admin/default"
-        history.push("/admin/default");
       }
     } catch (error) {
       toast.error("Đăng nhập thất bại!", {

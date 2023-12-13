@@ -32,11 +32,19 @@ import {
   MenuGroup,
   MenuOptionGroup,
   MenuDivider,
+  Checkbox,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogCloseButton,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from "@chakra-ui/react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import {
   useGlobalFilter,
@@ -48,21 +56,41 @@ import { MdBlock, MdEdit } from "react-icons/md";
 import { PhoneIcon, EmailIcon, ChevronDownIcon } from "@chakra-ui/icons";
 // Custom components
 import Card from "components/card/Card";
-import MainMenu from "components/menu/MainMenu";
+import axios from "axios";
 import "@fontsource/roboto";
 import banner from "assets/img/auth/banner.png";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingOverlay from "components/LoadingOverlay";
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 export default function Usertables(props) {
-  const { columnsData, tableData, bidders } = props;
+  const textColorBrand = useColorModeValue("brand.500", "white");
+  const {
+    columnsData,
+    tableData,
+    bidders,
+    handleNextPage,
+    handlePrevPage,
+    numPage,
+    isLoadingData,
+  } = props;
   const textColorBid = useColorModeValue("brand.500", "white");
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
   const [imageAuthenticate, setImageAuthenticate] = useState([]);
+  const [token, setToken] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [userId, setUserId] = useState("");
+  const cancelRef = useRef();
+
   useEffect(() => {
     const storedOrgResult = localStorage.getItem("result");
     const orgResult = JSON.parse(storedOrgResult);
+    const token = localStorage.getItem("token");
+    const accessToken = JSON.parse(token);
+    setToken(accessToken);
   }, []);
   const tableInstance = useTable(
     {
@@ -89,7 +117,49 @@ export default function Usertables(props) {
   const [dataRow, setDataRow] = useState([]);
   const [role, setRole] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log(dataRow);
+  const sortedData = dataRow.sort((a, b) => a.column.order - b.column.order);
+  console.log(sortedData);
+  const handleBanUser = async () => {
+    setLoading(true);
+    try {
+      const res = await axios({
+        method: "put",
+        url: "http://localhost:3000/api/v1/user/ban/" + userId,
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      if (res.data.status === "SUCCESS") {
+        toast.success("Khóa tài khoản tài khoản thành công!", {
+          position: "top-right",
+          autoClose: 3500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        props.fetchData();
+      }
+    } catch (error) {
+      toast.error("Khóa tài khoản thất bại!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      console.log(error.response);
+    } finally {
+      setLoading(false);
+      setUserId("");
+    }
+  };
   return (
     <Card
       direction="column"
@@ -97,13 +167,61 @@ export default function Usertables(props) {
       overflowX={{ sm: "scroll", lg: "hidden" }}
       width={"100%"}
     >
+      <AlertDialog
+        isOpen={isDialogOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={() => {
+          setIsDialogOpen(false);
+          setUserId("");
+        }}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader
+              fontFamily="Roboto"
+              fontSize="lg"
+              fontWeight="bold"
+            >
+              Xác nhận
+            </AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody fontFamily="Roboto">
+              Bạn có chắc chắn muốn khóa tài khoản này không?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button
+                fontFamily="Roboto"
+                ref={cancelRef}
+                onClick={() => {
+                  setIsDialogOpen(false);
+                  setUserId("");
+                }}
+              >
+                Hủy
+              </Button>
+              <Button
+                fontFamily="Roboto"
+                colorScheme="red"
+                onClick={() => {
+                  setIsDialogOpen(false);
+                  handleBanUser();
+                }}
+                ml={3}
+              >
+                Khóa
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontFamily="Roboto">Thông tin tài khoản</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {dataRow.map((item, index) => (
+            {sortedData.map((item, index) => (
               <Box key={index} mb={4}>
                 {item.column.Header === "Ảnh đại diện" ? (
                   <Card
@@ -129,7 +247,7 @@ export default function Usertables(props) {
                       mt="-60px"
                     />
                   </Card>
-                ) : item.column.Header === "Tên tổ chức" ? (
+                ) : item.column.Header === "Tên tài khoản" ? (
                   <Flex justifyContent={"center"} mt="-25px">
                     <Text
                       fontFamily="Roboto"
@@ -146,24 +264,8 @@ export default function Usertables(props) {
                       w="15px"
                       h="15px"
                       me="5px"
-                      color={
-                        item.value === "Đã xác thực"
-                          ? "green.500"
-                          : item.value === "Từ chối"
-                          ? "red.500"
-                          : item.value === "Chờ xác nhận"
-                          ? "orange.500"
-                          : null
-                      }
-                      as={
-                        item.value === "Đã xác thực"
-                          ? MdCheckCircle
-                          : item.value === "Từ chối"
-                          ? MdCancel
-                          : item.value === "Chờ xác nhận"
-                          ? MdOutlineError
-                          : null
-                      }
+                      color={item.value ? "green.500" : "red.500"}
+                      as={item.value ? MdCheckCircle : MdCancel}
                     />
                     <Text
                       fontFamily="Roboto"
@@ -171,7 +273,7 @@ export default function Usertables(props) {
                       fontSize="md"
                       fontWeight="700"
                     >
-                      {item.value}
+                      {item.value ? "Đã xác thực" : "Chưa xác thực"}
                     </Text>
                   </Flex>
                 ) : item.column.Header === "Email" ? (
@@ -188,7 +290,7 @@ export default function Usertables(props) {
                       placeholder="Email"
                     />
                   </InputGroup>
-                ) : item.column.Header === "Phone" ? (
+                ) : item.column.Header === "Số điện thoại" ? (
                   <InputGroup>
                     <InputLeftElement pointerEvents="none">
                       <PhoneIcon color="gray.300" />
@@ -202,7 +304,7 @@ export default function Usertables(props) {
                       placeholder="Số điện thoại"
                     />
                   </InputGroup>
-                ) : item.column.Header === "Address" ? (
+                ) : item.column.Header === "Địa chỉ" ? (
                   <InputGroup>
                     <InputLeftElement pointerEvents="none">
                       <Icon as={FaMapMarkerAlt} color="gray.300" />
@@ -235,7 +337,15 @@ export default function Usertables(props) {
                         as={Button}
                         rightIcon={<ChevronDownIcon />}
                       >
-                        {role ? role : item.value}
+                        {role
+                          ? role
+                          : item.value === "User"
+                          ? "Cá nhân"
+                          : item.value === "Organization"
+                          ? "Tổ chức"
+                          : item.value === "Super Admin"
+                          ? "Siêu quản trị viên"
+                          : "Quản trị viên"}
                       </MenuButton>
                       <MenuList zIndex={5}>
                         <MenuItem
@@ -318,11 +428,10 @@ export default function Usertables(props) {
         <Thead>
           {headerGroups.map((headerGroup, index) => (
             <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
-              {headerGroup.headers.slice(0, 6).map((column, index) => (
+              {headerGroup.headers.slice(0, 7).map((column, index) => (
                 <Th
                   fontFamily="Roboto"
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  pe="10px"
                   key={index}
                   borderColor={borderColor}
                 >
@@ -343,26 +452,49 @@ export default function Usertables(props) {
           {page.map((row, index) => {
             prepareRow(row);
             return (
-              <Tr
-                onClick={() => {
-                  setRole("");
-                  setDataRow(row.cells);
-                  onOpen();
-                }}
-                {...row.getRowProps()}
-                key={index}
-              >
-                {row.cells.slice(0, 6).map((cell, index) => {
+              <Tr {...row.getRowProps()} key={index}>
+                {row.cells.slice(0, 7).map((cell, index) => {
                   let data = "";
-                  if (cell.column.Header === "Ảnh đại diện") {
+
+                  if (cell.column.Header === "Trạng thái") {
                     data = (
                       <Flex justifyContent={"center"}>
+                        {cell.value ? (
+                          <Checkbox
+                            isChecked={cell.value}
+                            colorScheme="brandScheme"
+                          />
+                        ) : (
+                          <Checkbox
+                            isChecked={cell.value}
+                            colorScheme="brandScheme"
+                          />
+                        )}
+                      </Flex>
+                    );
+                  } else if (cell.column.Header === "Ảnh đại diện") {
+                    data = (
+                      <Flex
+                        onClick={() => {
+                          setRole("");
+                          setDataRow(row.cells);
+                          onOpen();
+                        }}
+                        justifyContent={"center"}
+                      >
                         <Avatar w={"50px"} h={"50px"} src={cell.value} />
                       </Flex>
                     );
-                  } else if (cell.column.Header === "Tên tổ chức") {
+                  } else if (cell.column.Header === "Tên tài khoản") {
                     data = (
-                      <Flex justifyContent={"center"}>
+                      <Flex
+                        onClick={() => {
+                          setRole("");
+                          setDataRow(row.cells);
+                          onOpen();
+                        }}
+                        justifyContent={"center"}
+                      >
                         <Text
                           fontFamily="Roboto"
                           color={textColor}
@@ -375,7 +507,40 @@ export default function Usertables(props) {
                     );
                   } else if (cell.column.Header === "Loại tài khoản") {
                     data = (
-                      <Flex justifyContent={"center"}>
+                      <Flex
+                        onClick={() => {
+                          setRole("");
+                          setDataRow(row.cells);
+                          onOpen();
+                        }}
+                        justifyContent={"center"}
+                      >
+                        <Text
+                          fontFamily="Roboto"
+                          color={textColor}
+                          fontSize="sm"
+                          fontWeight="700"
+                        >
+                          {cell.value === "User"
+                            ? "Cá nhân"
+                            : cell.value === "Organization"
+                            ? "Tổ chức"
+                            : cell.value === "Super Admin"
+                            ? "Siêu quản trị viên"
+                            : "Quản trị viên"}
+                        </Text>
+                      </Flex>
+                    );
+                  } else if (cell.column.Header === "Email") {
+                    data = (
+                      <Flex
+                        onClick={() => {
+                          setRole("");
+                          setDataRow(row.cells);
+                          onOpen();
+                        }}
+                        justifyContent={"center"}
+                      >
                         <Text
                           fontFamily="Roboto"
                           color={textColor}
@@ -386,45 +551,16 @@ export default function Usertables(props) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "Trạng thái") {
+                  } else if (cell.column.Header === "Số điện thoại") {
                     data = (
-                      <Flex align="center" justifyContent={"center"}>
-                        <Icon
-                          w="24px"
-                          h="24px"
-                          me="5px"
-                          color={
-                            cell.value === "Đã xác thực"
-                              ? "green.500"
-                              : cell.value === "Từ chối"
-                              ? "red.500"
-                              : cell.value === "Chờ xác nhận"
-                              ? "orange.500"
-                              : null
-                          }
-                          as={
-                            cell.value === "Đã xác thực"
-                              ? MdCheckCircle
-                              : cell.value === "Từ chối"
-                              ? MdCancel
-                              : cell.value === "Chờ xác nhận"
-                              ? MdOutlineError
-                              : null
-                          }
-                        />
-                        <Text
-                          fontFamily="Roboto"
-                          color={textColor}
-                          fontSize="sm"
-                          fontWeight="700"
-                        >
-                          {cell.value}
-                        </Text>
-                      </Flex>
-                    );
-                  } else if (cell.column.Header === "Ngày tạo") {
-                    data = (
-                      <Flex justifyContent={"center"}>
+                      <Flex
+                        onClick={() => {
+                          setRole("");
+                          setDataRow(row.cells);
+                          onOpen();
+                        }}
+                        justifyContent={"center"}
+                      >
                         <Text
                           fontFamily="Roboto"
                           color={textColor}
@@ -444,6 +580,10 @@ export default function Usertables(props) {
                             size="sm"
                             colorScheme="brandScheme"
                             hover={"Khóa tài khoản"}
+                            onClick={() => {
+                              setIsDialogOpen(true);
+                              setUserId(cell.value);
+                            }}
                           >
                             <Icon
                               as={MdBlock}
@@ -453,6 +593,11 @@ export default function Usertables(props) {
                             />
                           </Button>
                           <Button
+                            onClick={() => {
+                              setRole("");
+                              setDataRow(row.cells);
+                              onOpen();
+                            }}
                             fontFamily="Roboto"
                             size="sm"
                             backgroundColor="gray.800"
@@ -490,6 +635,18 @@ export default function Usertables(props) {
           })}
         </Tbody>
       </Table>
+      <ToastContainer />
+      <Flex mt="4" justifyContent="center" alignItems={"center"}>
+        <Button onClick={handlePrevPage} disabled={numPage === 1} mr="4">
+          {"<"}
+        </Button>
+        <Text fontFamily="Roboto" color={textColor}>{`Trang ${numPage}`}</Text>
+        <Button onClick={handleNextPage} disabled={tableData.length < 5} ml="4">
+          {">"}
+        </Button>
+      </Flex>
+      <LoadingOverlay isLoadingOverlay={loading} />
+      <LoadingOverlay isLoadingOverlay={isLoadingData} />
     </Card>
   );
 }

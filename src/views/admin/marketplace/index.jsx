@@ -34,11 +34,6 @@ export default function Marketplace() {
     setToken(accessToken);
   }, []);
 
-  useEffect(() => {
-    console.log(
-      `http://localhost:3000/api/v1/posts/${orgId}?page=${page}&limit=8`
-    );
-  }, [orgId, page]);
 
   const formatDate = (dateString) => {
     const formattedDate = new Date(dateString).toLocaleDateString("en-GB");

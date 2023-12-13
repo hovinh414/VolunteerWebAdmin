@@ -35,9 +35,6 @@ export default function Settings() {
             Avatar3,
             Avatar4,
             Avatar5,
-            Avatar6,
-            Avatar7,
-            Avatar8,
           ]}
         />
       </SimpleGrid>
