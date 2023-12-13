@@ -52,7 +52,6 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-import { MdBlock, MdEdit } from "react-icons/md";
 import { PhoneIcon, EmailIcon, ChevronDownIcon } from "@chakra-ui/icons";
 // Custom components
 import Card from "components/card/Card";
@@ -63,7 +62,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingOverlay from "components/LoadingOverlay";
 // Assets
-import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
+import { MdCheckCircle, MdCancel, MdBlock, MdEdit } from "react-icons/md";
 export default function Usertables(props) {
   const textColorBrand = useColorModeValue("brand.500", "white");
   const {
@@ -78,7 +77,6 @@ export default function Usertables(props) {
   const textColorBid = useColorModeValue("brand.500", "white");
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
-  const [imageAuthenticate, setImageAuthenticate] = useState([]);
   const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -118,7 +116,6 @@ export default function Usertables(props) {
   const [role, setRole] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const sortedData = dataRow.sort((a, b) => a.column.order - b.column.order);
-  console.log(sortedData);
   const handleBanUser = async () => {
     setLoading(true);
     try {
@@ -131,7 +128,7 @@ export default function Usertables(props) {
       });
 
       if (res.data.status === "SUCCESS") {
-        toast.success("Khóa tài khoản tài khoản thành công!", {
+        toast.success("Khóa tài khoản thành công!", {
           position: "top-right",
           autoClose: 3500,
           hideProgressBar: false,
@@ -164,6 +161,7 @@ export default function Usertables(props) {
     <Card
       direction="column"
       px="0px"
+      mt={5}
       overflowX={{ sm: "scroll", lg: "hidden" }}
       width={"100%"}
     >

@@ -7,6 +7,7 @@ import {
   MenuItem,
   MenuList,
   Text,
+  Avatar,
   useColorModeValue,
 } from "@chakra-ui/react";
 // Custom Components
@@ -196,17 +197,7 @@ export default function HeaderLinks(props) {
 
       <Menu>
         <MenuButton p="0px">
-          <Image
-            src={avatar ? avatar : admin}
-            _hover={{ cursor: "pointer" }}
-            color="white"
-            name="Adela Parkson"
-            bg="#11047A"
-            size="sm"
-            w="40px"
-            h="40px"
-            borderRadius={50}
-          />
+          <Avatar w={"40px"} h={"40px"} src={avatar} />
         </MenuButton>
         <MenuList
           boxShadow={shadow}

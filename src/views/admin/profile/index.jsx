@@ -20,7 +20,6 @@ export default function Overview() {
     const token = localStorage.getItem("token");
     const accessToken = JSON.parse(token);
     const storedOrgResult = localStorage.getItem("result");
-    const orgResult = JSON.parse(storedOrgResult);
     setToken(accessToken);
   }, []);
   const fetchData = useCallback(async () => {
@@ -73,7 +72,6 @@ export default function Overview() {
         <ComplexTable
           columnsData={columnsDataComplex}
           tableData={users}
-          bidders={[Avatar1, Avatar2, Avatar3, Avatar4, Avatar1]}
           handlePrevPage={handlePrevPage}
           handleNextPage={handleNextPage}
           numPage={page}

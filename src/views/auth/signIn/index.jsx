@@ -162,10 +162,10 @@ function SignIn() {
               "token",
               JSON.stringify(res.data.data.refreshToken)
             );
-            history.push("/admin/default");
+            
           }
         }
-
+        history.push("/admin/default");
         // Lưu refreshToken vào localStorage
       }
     } catch (error) {
@@ -180,6 +180,10 @@ function SignIn() {
         theme: "light",
       });
       console.log(error.response);
+    } finally {
+      
+      window.location.reload();
+      
     }
   };
   const history = useHistory();

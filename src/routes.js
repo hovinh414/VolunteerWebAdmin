@@ -17,13 +17,14 @@ import DataTables from "views/admin/dataTables";
 
 // Auth Imports
 import SignInCentered from "views/auth/signIn";
-
+const storedOrgResult = localStorage.getItem("result");
+const orgResult = JSON.parse(storedOrgResult);
 const routes = [
   {
     name: "Trang chủ",
     layout: "/admin",
     path: "/default",
-    icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
     component: MainDashboard,
   },
   {
@@ -31,38 +32,73 @@ const routes = [
     layout: "/admin",
     path: "/posts",
     icon: (
-      <Icon
-        as={MdOutlineSignpost}
-        width='20px'
-        height='20px'
-        color='inherit'
-      />
+      <Icon as={MdOutlineSignpost} width="20px" height="20px" color="inherit" />
     ),
     component: NFTMarketplace,
     secondary: true,
   },
+  ...(!orgResult
+    ? []
+    : [
+        ...(orgResult.type === "Super Admin"
+          ? [
+              {
+                name: "Quản lý minh chứng",
+                layout: "/admin",
+                icon: (
+                  <Icon
+                    as={MdBarChart}
+                    width="20px"
+                    height="20px"
+                    color="inherit"
+                  />
+                ),
+                path: "/authenticate",
+                component: DataTables,
+              },
+              {
+                name: "Quản lý tài khoản",
+                layout: "/admin",
+                path: "/users",
+                icon: (
+                  <Icon
+                    as={MdPerson}
+                    width="20px"
+                    height="20px"
+                    color="inherit"
+                  />
+                ),
+                component: Profile,
+              },
+            ]
+          : [
+              ...(orgResult.type === "Admin"
+                ? [
+                    {
+                      name: "Quản lý minh chứng",
+                      layout: "/admin",
+                      icon: (
+                        <Icon
+                          as={MdBarChart}
+                          width="20px"
+                          height="20px"
+                          color="inherit"
+                        />
+                      ),
+                      path: "/authenticate",
+                      component: DataTables,
+                    },
+                  ]
+                : []),
+            ]),
+      ]),
   {
-    name: "Quản lý minh chứng",
-    layout: "/admin",
-    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
-    path: "/authenticate",
-    component: DataTables,
-  },
-  {
-    name: "Quản lý tài khoản",
-    layout: "/admin",
-    path: "/users",
-    icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
-    component: Profile,
-  },
-  {
-    name: "" ,
+    name: "",
     layout: "/auth",
     path: "/sign-in",
-    icon: <Icon as={MdLock} color='#fff' />,
+    icon: <Icon as={MdLock} color="#fff" />,
     component: SignInCentered,
   },
-
 ];
 
 export default routes;

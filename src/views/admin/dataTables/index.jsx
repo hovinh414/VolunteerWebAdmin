@@ -1,18 +1,54 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import ComplexTable from "views/admin/dataTables/components/ComplexTable";
 import { columnsDataComplex } from "views/admin/dataTables/variables/columnsData";
-import tableDataComplex from "views/admin/dataTables/variables/tableDataComplex.json";
-import React from "react";
-import Avatar1 from "assets/img/avatars/avatar1.png";
-import Avatar2 from "assets/img/avatars/avatar2.png";
-import Avatar3 from "assets/img/avatars/avatar3.png";
-import Avatar4 from "assets/img/avatars/avatar4.png";
-import Avatar5 from "assets/img/avatars/avatar5.png";
-import Avatar6 from "assets/img/avatars/avatar6.png";
-import Avatar7 from "assets/img/avatars/avatar7.png";
-import Avatar8 from "assets/img/avatars/avatar8.png";
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 export default function Settings() {
-  // Chakra Color Mode
+  const [token, setToken] = useState("");
+  const [page, setPage] = useState(1);
+  const [verifyOrg, setVerifyOrg] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const accessToken = JSON.parse(token);
+    const storedOrgResult = localStorage.getItem("result");
+    setToken(accessToken);
+  }, []);
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/v1/org/authen?page=${page}&limit=4`,
+        config
+      );
+
+      if (response.data.status === "SUCCESS") {
+        setVerifyOrg(response.data.data);
+      }
+    } catch (error) {
+      console.log("API Error get user:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [page, token]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <SimpleGrid
@@ -28,14 +64,12 @@ export default function Settings() {
       >
         <ComplexTable
           columnsData={columnsDataComplex}
-          tableData={tableDataComplex}
-          bidders={[
-            Avatar1,
-            Avatar2,
-            Avatar3,
-            Avatar4,
-            Avatar5,
-          ]}
+          tableData={verifyOrg}
+          handlePrevPage={handlePrevPage}
+          handleNextPage={handleNextPage}
+          numPage={page}
+          isLoadingData={isLoading}
+          fetchData={fetchData} 
         />
       </SimpleGrid>
     </Box>
