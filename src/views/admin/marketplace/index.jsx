@@ -24,16 +24,16 @@ export default function Marketplace() {
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [type, setType] = useState("");
   useEffect(() => {
     const token = localStorage.getItem("token");
     const accessToken = JSON.parse(token);
     const storedOrgResult = localStorage.getItem("result");
     const orgResult = JSON.parse(storedOrgResult);
     setOrgId(orgResult._id);
+    setType(orgResult.type);
     setToken(accessToken);
   }, []);
-
 
   const formatDate = (dateString) => {
     const formattedDate = new Date(dateString).toLocaleDateString("en-GB");
@@ -62,10 +62,36 @@ export default function Marketplace() {
       setIsLoading(false);
     }
   }, [orgId, page, token]);
+  const fetchAllData = useCallback(async () => {
+    setIsLoading(true);
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/v1/posts?page=${page}&limit=8`,
+        config
+      );
 
+      if (response.data.status === "SUCCESS") {
+        setPosts(response.data.data.posts);
+      }
+    } catch (error) {
+      console.log("API Error get post:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [page, token]);
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if (type === "Organization") {
+      fetchData();
+    } else {
+      fetchAllData();
+    }
+    
+  }, [fetchData, fetchAllData]);
   const handlePrevPage = () => {
     if (page > 1) {
       setPage((prevPage) => prevPage - 1);
