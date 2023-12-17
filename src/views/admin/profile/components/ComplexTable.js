@@ -46,6 +46,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import SwitchField from "components/fields/SwitchField";
 import {
   useGlobalFilter,
   usePagination,
@@ -116,6 +117,14 @@ export default function Usertables(props) {
   const [role, setRole] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const sortedData = dataRow.sort((a, b) => a.column.order - b.column.order);
+  const dataItem = dataRow.find((item) => item.column.Header === "Thao tác");
+  useEffect(() => {
+    if (dataItem) {
+      setUserId(dataItem.value);
+    } else {
+      return;
+    }
+  }, [dataItem]);
   const handleBanUser = async () => {
     setLoading(true);
     try {
@@ -458,14 +467,22 @@ export default function Usertables(props) {
                     data = (
                       <Flex justifyContent={"center"}>
                         {cell.value ? (
-                          <Checkbox
+                          <SwitchField
                             isChecked={cell.value}
-                            colorScheme="brandScheme"
+                            reversed={true}
+                            fontSize="sm"
+                            id="3"
+                            onChange={() => {
+                              setIsDialogOpen(true);
+                              setDataRow(row.cells);
+                            }}
                           />
                         ) : (
-                          <Checkbox
+                          <SwitchField
                             isChecked={cell.value}
-                            colorScheme="brandScheme"
+                            reversed={true}
+                            fontSize="sm"
+                            id="3"
                           />
                         )}
                       </Flex>

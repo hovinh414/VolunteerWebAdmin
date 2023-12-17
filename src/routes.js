@@ -7,6 +7,7 @@ import {
   MdHome,
   MdLock,
   MdOutlineSignpost,
+  MdReport
 } from "react-icons/md";
 
 // Admin Imports
@@ -14,7 +15,7 @@ import MainDashboard from "views/admin/default";
 import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/dataTables";
-
+import Report from "views/admin/reports";
 // Auth Imports
 import SignInCentered from "views/auth/signIn";
 const storedOrgResult = localStorage.getItem("result");
@@ -42,6 +43,20 @@ const routes = [
     : [
         ...(orgResult.type === "Super Admin"
           ? [
+              {
+                name: "Quản lý báo cáo",
+                layout: "/admin",
+                icon: (
+                  <Icon
+                    as={MdReport}
+                    width="20px"
+                    height="20px"
+                    color="inherit"
+                  />
+                ),
+                path: "/reports",
+                component: Report,
+              },
               {
                 name: "Quản lý minh chứng",
                 layout: "/admin",
@@ -74,6 +89,20 @@ const routes = [
           : [
               ...(orgResult.type === "Admin"
                 ? [
+                    {
+                      name: "Quản lý báo cáo",
+                      layout: "/admin",
+                      icon: (
+                        <Icon
+                          as={MdReport}
+                          width="20px"
+                          height="20px"
+                          color="inherit"
+                        />
+                      ),
+                      path: "/reports",
+                      component: Report,
+                    },
                     {
                       name: "Quản lý minh chứng",
                       layout: "/admin",
