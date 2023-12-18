@@ -22,7 +22,7 @@ import banner from "assets/img/auth/banner.png";
 import avatar from "assets/img/avatars/avatar4.png";
 import React, { useState, useEffect, useCallback } from "react";
 import LoadingOverlay from "components/LoadingOverlay";
-
+import { ToastContainer, toast } from "react-toastify";
 export default function Reports() {
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorBrand = useColorModeValue("brand.500", "white");
@@ -43,12 +43,11 @@ export default function Reports() {
         method: "post",
         url: "http://localhost:3000/api/v1/reports",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
           Accept: "application/json",
           Authorization: token,
         },
         data: {
-          solve,
+          solve: solve,
         },
       });
 
@@ -67,6 +66,7 @@ export default function Reports() {
   }, [fetchData]);
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+      <ToastContainer />
       {/* Main Fields */}
       <LoadingOverlay LoadingOverlay={isLoading} />
       <Flex

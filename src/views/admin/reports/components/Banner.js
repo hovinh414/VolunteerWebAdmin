@@ -128,6 +128,7 @@ export default function Banner(props) {
       });
 
       if (res.data.status === "SUCCESS") {
+        console.log("OK")
         toast.success("Xác nhận thành công!", {
           position: "top-right",
           autoClose: 3500,
@@ -158,7 +159,7 @@ export default function Banner(props) {
   };
   return (
     <Card mb={{ base: "0px", lg: "20px" }}>
-      <ToastContainer />
+      
       <LoadingOverlay isLoadingOverlay={loading} />
       
       <Modal isOpen={isOpen} onClose={onClose}>
