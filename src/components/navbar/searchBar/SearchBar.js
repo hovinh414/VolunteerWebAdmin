@@ -10,8 +10,15 @@ import { SearchIcon } from "@chakra-ui/icons";
 import "@fontsource/roboto";
 export function SearchBar(props) {
   // Pass the computed styles into the `__css` prop
-  const { variant, background, children, placeholder, borderRadius, ...rest } =
-    props;
+  const {
+    searchPost,
+    variant,
+    background,
+    children,
+    placeholder,
+    borderRadius,
+    ...rest
+  } = props;
   // Chakra Color Mode
   const searchIconColor = useColorModeValue("gray.700", "white");
   const inputBg = useColorModeValue("secondaryGray.300", "navy.900");
@@ -40,12 +47,13 @@ export function SearchBar(props) {
         fontFamily="Roboto"
         variant="search"
         fontSize="sm"
-        bg={background ? background : inputBg}
+        bg={"#fff"}
         color={inputText}
         fontWeight="500"
         _placeholder={{ color: "gray.400", fontSize: "14px" }}
         borderRadius={borderRadius ? borderRadius : "30px"}
         placeholder={placeholder ? placeholder : "Tìm kiếm..."}
+        onChange={(e) => searchPost(e.target.value)}
       />
     </InputGroup>
   );

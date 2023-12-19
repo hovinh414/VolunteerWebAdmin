@@ -10,11 +10,11 @@ import {
   SimpleGrid,
   CircularProgress,
 } from "@chakra-ui/react";
-
 // Custom components
 import NFT from "components/card/NFT";
 import "@fontsource/roboto";
 import axios from "axios";
+import { SearchBar } from "components/navbar/searchBar/SearchBar";
 export default function Marketplace() {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -39,7 +39,30 @@ export default function Marketplace() {
     const formattedDate = new Date(dateString).toLocaleDateString("en-GB");
     return formattedDate;
   };
-
+  const searchPost = async (searchText) => {
+    if (
+      searchText.length === 0 &&
+      type !== "Organization" &&
+      searchText.trim() === ""
+    ) {
+      fetchAllData();
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const res = await axios({
+        method: "get",
+        url: "http://localhost:3000/api/v1/search-post?text=" + searchText,
+      });
+      if (res.data.status === "SUCCESS") {
+        setPosts(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     const config = {
@@ -90,7 +113,6 @@ export default function Marketplace() {
     } else {
       fetchAllData();
     }
-    
   }, [fetchData, fetchAllData]);
   const handlePrevPage = () => {
     if (page > 1) {
@@ -104,7 +126,14 @@ export default function Marketplace() {
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
       {/* Main Fields */}
-
+      <Flex flexDirection={"row"} justifyContent={"flex-end"}>
+        <SearchBar
+          mb={{ base: "10px", md: "unset" }}
+          me="10px"
+          borderRadius="30px"
+          searchPost={searchPost}
+        />
+      </Flex>
       <Grid
         mb="20px"
         w={"100%"}
@@ -117,6 +146,7 @@ export default function Marketplace() {
           gridArea={{ xl: "1 / 1 / 2 / 3", "2xl": "1 / 1 / 2 / 2" }}
         >
           {/* <Banner /> */}
+
           <Flex direction="column">
             <Flex
               mt="45px"
@@ -180,25 +210,27 @@ export default function Marketplace() {
                 }}
                 gap="20px"
               >
-                {posts.map((post, index) => (
-                  <NFT
-                    key={index}
-                    post={post}
-                    avatar={post.ownerAvatar}
-                    name={post.ownerDisplayname}
-                    createDate={formatDate(post.createdAt)}
-                    images={post.media}
-                    currentbid={
-                      post.type === "activity" || post.type === "Activity"
-                        ? "Hoạt động tình nguyện"
-                        : "Hoạt động gây quỹ"
-                    }
-                    download="#"
-                    participants={post.participants}
-                    totalUserJoin={post.totalUserJoin}
-                    exprirationDate={formatDate(post.exprirationDate)}
-                  />
-                ))}
+                {posts.length === 0
+                  ? null
+                  : posts.map((post, index) => (
+                      <NFT
+                        key={index}
+                        post={post}
+                        avatar={post.ownerAvatar}
+                        name={post.ownerDisplayname}
+                        createDate={formatDate(post.createdAt)}
+                        images={post.media}
+                        currentbid={
+                          post.type === "activity" || post.type === "Activity"
+                            ? "Hoạt động tình nguyện"
+                            : "Hoạt động gây quỹ"
+                        }
+                        download="#"
+                        participants={post.participants}
+                        totalUserJoin={post.totalUserJoin}
+                        exprirationDate={formatDate(post.exprirationDate)}
+                      />
+                    ))}
               </SimpleGrid>
             )}
           </Flex>

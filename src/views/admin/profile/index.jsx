@@ -1,15 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid, Flex } from "@chakra-ui/react";
 import ComplexTable from "views/admin/profile/components/ComplexTable";
 import { columnsDataComplex } from "views/admin/profile/components/columnsData";
 import tableDataComplex from "views/admin/profile/components/tableDataComplex.json";
 import React from "react";
 import axios from "axios";
-import Avatar1 from "assets/img/avatars/avatar1.png";
-import Avatar2 from "assets/img/avatars/avatar2.png";
-import Avatar3 from "assets/img/avatars/avatar3.png";
-import Avatar4 from "assets/img/avatars/avatar4.png";
-
+import { SearchBar } from "components/navbar/searchBar/SearchBar";
 export default function Overview() {
   const [token, setToken] = useState("");
   const [page, setPage] = useState(1);
@@ -22,6 +18,24 @@ export default function Overview() {
     const storedOrgResult = localStorage.getItem("result");
     setToken(accessToken);
   }, []);
+  const searchPost = async (searchText) => {
+    console.log(searchText);
+    if (searchText.length === 0) {
+      fetchData();
+      return;
+    }
+    try {
+      const res = await axios({
+        method: "get",
+        url: "http://localhost:3000/api/v1/search-user?text=" + searchText,
+      });
+      if (res.data.status === "SUCCESS") {
+        setUsers(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } 
+  };
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     const config = {
@@ -58,6 +72,14 @@ export default function Overview() {
   };
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+      <Flex flexDirection={"row"} justifyContent={"flex-end"}>
+        <SearchBar
+          mb={{ base: "10px", md: "unset" }}
+          me="10px"
+          borderRadius="30px"
+          searchPost={searchPost}
+        />
+      </Flex>
       <SimpleGrid
         mb="20px"
         width={{
@@ -76,7 +98,7 @@ export default function Overview() {
           handleNextPage={handleNextPage}
           numPage={page}
           isLoadingData={isLoading}
-          fetchData={fetchData} 
+          fetchData={fetchData}
         />
       </SimpleGrid>
     </Box>
