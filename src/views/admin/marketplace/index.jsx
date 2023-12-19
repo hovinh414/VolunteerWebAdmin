@@ -210,9 +210,8 @@ export default function Marketplace() {
                 }}
                 gap="20px"
               >
-                {posts.length === 0
-                  ? null
-                  : posts.map((post, index) => (
+                {posts && posts.length > 0
+                  ? posts.map((post, index) => (
                       <NFT
                         key={index}
                         post={post}
@@ -230,7 +229,8 @@ export default function Marketplace() {
                         totalUserJoin={post.totalUserJoin}
                         exprirationDate={formatDate(post.exprirationDate)}
                       />
-                    ))}
+                    ))
+                  : null}
               </SimpleGrid>
             )}
           </Flex>

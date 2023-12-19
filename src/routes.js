@@ -7,7 +7,8 @@ import {
   MdHome,
   MdLock,
   MdOutlineSignpost,
-  MdReport
+  MdList,
+  MdChat,
 } from "react-icons/md";
 
 // Admin Imports
@@ -16,6 +17,7 @@ import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/dataTables";
 import Report from "views/admin/reports";
+import Chat from "views/admin/chat";
 // Auth Imports
 import SignInCentered from "views/auth/signIn";
 const storedOrgResult = localStorage.getItem("result");
@@ -48,7 +50,7 @@ const routes = [
                 layout: "/admin",
                 icon: (
                   <Icon
-                    as={MdReport}
+                    as={MdList}
                     width="20px"
                     height="20px"
                     color="inherit"
@@ -94,7 +96,7 @@ const routes = [
                       layout: "/admin",
                       icon: (
                         <Icon
-                          as={MdReport}
+                          as={MdList}
                           width="20px"
                           height="20px"
                           color="inherit"
@@ -121,6 +123,14 @@ const routes = [
                 : []),
             ]),
       ]),
+  {
+    name: "Trò chuyện",
+    layout: "/admin",
+    path: "/chats",
+    icon: <Icon as={MdChat} width="20px" height="20px" color="inherit" />,
+    component: Chat,
+    secondary: true,
+  },
   {
     name: "",
     layout: "/auth",
