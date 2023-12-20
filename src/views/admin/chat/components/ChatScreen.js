@@ -53,6 +53,69 @@ const ChatScreen = ({ chatName, avatar }) => {
       avatar: "url/to/avatar3.jpg",
       sender: "me",
     },
+    {
+      id: 1,
+      message: "Chào bạn! Bạn có cần giúp đỡ gì không?",
+      time: "2023-01-20T10:30:00Z",
+      avatar: "url/to/avatar1.jpg",
+      sender: "me", // 'me' đại diện cho người gửi
+    },
+    {
+      id: 2,
+      message: "Không, cảm ơn! Mình đang xem xét ứng dụng chat.",
+      time: "2023-01-20T10:35:00Z",
+      avatar: "url/to/avatar2.jpg",
+      sender: "other", // 'other' đại diện cho đối phương
+    },
+    {
+      id: 3,
+      message: "Đó là ý tưởng tuyệt vời. Bạn cần thêm thông tin gì không?",
+      time: "2023-01-20T10:40:00Z",
+      avatar: "url/to/avatar3.jpg",
+      sender: "me",
+    },
+    {
+      id: 1,
+      message: "Chào bạn! Bạn có cần giúp đỡ gì không?",
+      time: "2023-01-20T10:30:00Z",
+      avatar: "url/to/avatar1.jpg",
+      sender: "me", // 'me' đại diện cho người gửi
+    },
+    {
+      id: 2,
+      message: "Không, cảm ơn! Mình đang xem xét ứng dụng chat.",
+      time: "2023-01-20T10:35:00Z",
+      avatar: "url/to/avatar2.jpg",
+      sender: "other", // 'other' đại diện cho đối phương
+    },
+    {
+      id: 3,
+      message: "Đó là ý tưởng tuyệt vời. Bạn cần thêm thông tin gì không?",
+      time: "2023-01-20T10:40:00Z",
+      avatar: "url/to/avatar3.jpg",
+      sender: "me",
+    },
+    {
+      id: 1,
+      message: "Chào bạn! Bạn có cần giúp đỡ gì không?",
+      time: "2023-01-20T10:30:00Z",
+      avatar: "url/to/avatar1.jpg",
+      sender: "me", // 'me' đại diện cho người gửi
+    },
+    {
+      id: 2,
+      message: "Không, cảm ơn! Mình đang xem xét ứng dụng chat.",
+      time: "2023-01-20T10:35:00Z",
+      avatar: "url/to/avatar2.jpg",
+      sender: "other", // 'other' đại diện cho đối phương
+    },
+    {
+      id: 3,
+      message: "Đó là ý tưởng tuyệt vời. Bạn cần thêm thông tin gì không?",
+      time: "2023-01-20T10:40:00Z",
+      avatar: "url/to/avatar3.jpg",
+      sender: "me",
+    },
     // Thêm các tin nhắn khác tại đây
   ];
   return (
@@ -64,7 +127,6 @@ const ChatScreen = ({ chatName, avatar }) => {
       justifyContent="flex-end"
       boxShadow={cardShadow}
       borderRadius={"25px"}
-      display="flex"
     >
       <Flex p={2} flexDirection={"row"} alignItems={"center"} mb={2}>
         <Avatar h="60px" w="60px" src={avatar} me="20px" />
@@ -72,7 +134,11 @@ const ChatScreen = ({ chatName, avatar }) => {
           {chatName}
         </Text>
       </Flex>
-      <Flex flexDirection={"column"}>
+      <Flex
+        flexDirection={"column"}
+        overflowY="auto"
+        maxHeight="500px"
+      >
         {messages.map((item, index) => (
           <Flex
             justifyContent={item.sender === "me" ? "flex-end" : "flex-start"}
@@ -122,12 +188,7 @@ const ChatScreen = ({ chatName, avatar }) => {
           </Flex>
         ))}
       </Flex>
-      <Box
-        flex={1}
-        display="flex"
-        flexDirection="column"
-        justifyContent="flex-end"
-      >
+      <Box display="flex" flexDirection="column" justifyContent="flex-end">
         <InputGroup mt="auto">
           <Input
             focusBorderColor="red.500"
