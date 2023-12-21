@@ -87,6 +87,21 @@ const routes = [
                 ),
                 component: Profile,
               },
+              {
+                name: "Trò chuyện",
+                layout: "/admin",
+                path: "/chats",
+                icon: (
+                  <Icon
+                    as={MdChat}
+                    width="20px"
+                    height="20px"
+                    color="inherit"
+                  />
+                ),
+                component: Chat,
+                secondary: true,
+              },
             ]
           : [
               ...(orgResult.type === "Admin"
@@ -119,18 +134,25 @@ const routes = [
                       path: "/authenticate",
                       component: DataTables,
                     },
+                    {
+                      name: "Trò chuyện",
+                      layout: "/admin",
+                      path: "/chats",
+                      icon: (
+                        <Icon
+                          as={MdChat}
+                          width="20px"
+                          height="20px"
+                          color="inherit"
+                        />
+                      ),
+                      component: Chat,
+                      secondary: true,
+                    },
                   ]
                 : []),
             ]),
       ]),
-  {
-    name: "Trò chuyện",
-    layout: "/admin",
-    path: "/chats",
-    icon: <Icon as={MdChat} width="20px" height="20px" color="inherit" />,
-    component: Chat,
-    secondary: true,
-  },
   {
     name: "",
     layout: "/auth",
