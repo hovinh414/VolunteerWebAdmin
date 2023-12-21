@@ -63,7 +63,7 @@ export default function Marketplace() {
       setIsLoading(false);
     }
   };
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     setIsLoading(true);
     const config = {
       headers: {
@@ -84,8 +84,8 @@ export default function Marketplace() {
     } finally {
       setIsLoading(false);
     }
-  }, [orgId, page, token]);
-  const fetchAllData = useCallback(async () => {
+  };
+  const fetchAllData = async () => {
     setIsLoading(true);
     const config = {
       headers: {
@@ -106,14 +106,14 @@ export default function Marketplace() {
     } finally {
       setIsLoading(false);
     }
-  }, [page, token]);
+  };
   useEffect(() => {
     if (type === "Organization") {
       fetchData();
     } else {
       fetchAllData();
     }
-  }, [fetchData, fetchAllData]);
+  }, [page]);
   const handlePrevPage = () => {
     if (page > 1) {
       setPage((prevPage) => prevPage - 1);
@@ -123,6 +123,7 @@ export default function Marketplace() {
   const handleNextPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
+  console.log(posts)
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
       {/* Main Fields */}
