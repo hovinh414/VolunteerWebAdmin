@@ -10,11 +10,11 @@ import {
   SimpleGrid,
   CircularProgress,
 } from "@chakra-ui/react";
-
 // Custom components
 import NFT from "components/card/NFT";
 import "@fontsource/roboto";
 import axios from "axios";
+import { SearchBar } from "components/navbar/searchBar/SearchBar";
 export default function Marketplace() {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -24,28 +24,46 @@ export default function Marketplace() {
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [type, setType] = useState("");
   useEffect(() => {
     const token = localStorage.getItem("token");
     const accessToken = JSON.parse(token);
-    const storedOrgResult = localStorage.getItem("orgResult");
+    const storedOrgResult = localStorage.getItem("result");
     const orgResult = JSON.parse(storedOrgResult);
     setOrgId(orgResult._id);
+    setType(orgResult.type);
     setToken(accessToken);
   }, []);
-
-  useEffect(() => {
-    console.log(
-      `http://localhost:3000/api/v1/posts/${orgId}?page=${page}&limit=8`
-    );
-  }, [orgId, page]);
 
   const formatDate = (dateString) => {
     const formattedDate = new Date(dateString).toLocaleDateString("en-GB");
     return formattedDate;
   };
-
-  const fetchData = useCallback(async () => {
+  const searchPost = async (searchText) => {
+    if (
+      searchText.length === 0 &&
+      type !== "Organization" &&
+      searchText.trim() === ""
+    ) {
+      fetchAllData();
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const res = await axios({
+        method: "get",
+        url: "http://localhost:3000/api/v1/search-post?text=" + searchText,
+      });
+      if (res.data.status === "SUCCESS") {
+        setPosts(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const fetchData = async () => {
     setIsLoading(true);
     const config = {
       headers: {
@@ -66,11 +84,36 @@ export default function Marketplace() {
     } finally {
       setIsLoading(false);
     }
-  }, [orgId, page, token]);
+  };
+  const fetchAllData = async () => {
+    setIsLoading(true);
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/v1/posts?page=${page}&limit=8`,
+        config
+      );
 
+      if (response.data.status === "SUCCESS") {
+        setPosts(response.data.data.posts);
+      }
+    } catch (error) {
+      console.log("API Error get post:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if (type === "Organization") {
+      fetchData();
+    } else {
+      fetchAllData();
+    }
+  }, [page]);
   const handlePrevPage = () => {
     if (page > 1) {
       setPage((prevPage) => prevPage - 1);
@@ -80,10 +123,18 @@ export default function Marketplace() {
   const handleNextPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
+  console.log(posts)
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
       {/* Main Fields */}
-
+      <Flex flexDirection={"row"} justifyContent={"flex-end"}>
+        <SearchBar
+          mb={{ base: "10px", md: "unset" }}
+          me="10px"
+          borderRadius="30px"
+          searchPost={searchPost}
+        />
+      </Flex>
       <Grid
         mb="20px"
         w={"100%"}
@@ -96,6 +147,7 @@ export default function Marketplace() {
           gridArea={{ xl: "1 / 1 / 2 / 3", "2xl": "1 / 1 / 2 / 2" }}
         >
           {/* <Banner /> */}
+
           <Flex direction="column">
             <Flex
               mt="45px"
@@ -159,25 +211,27 @@ export default function Marketplace() {
                 }}
                 gap="20px"
               >
-                {posts.map((post, index) => (
-                  <NFT
-                    key={index}
-                    post={post}
-                    avatar={post.ownerAvatar}
-                    name={post.ownerDisplayname}
-                    createDate={formatDate(post.createdAt)}
-                    images={post.media}
-                    currentbid={
-                      post.type === "activity" || post.type === "Activity"
-                        ? "Hoạt động tình nguyện"
-                        : "Hoạt động gây quỹ"
-                    }
-                    download="#"
-                    participants={post.participants}
-                    totalUserJoin={post.totalUserJoin}
-                    exprirationDate={formatDate(post.exprirationDate)}
-                  />
-                ))}
+                {posts && posts.length > 0
+                  ? posts.map((post, index) => (
+                      <NFT
+                        key={index}
+                        post={post}
+                        avatar={post.ownerAvatar}
+                        name={post.ownerDisplayname}
+                        createDate={formatDate(post.createdAt)}
+                        images={post.media}
+                        currentbid={
+                          post.type === "activity" || post.type === "Activity"
+                            ? "Hoạt động tình nguyện"
+                            : "Hoạt động gây quỹ"
+                        }
+                        download="#"
+                        participants={post.participants}
+                        totalUserJoin={post.totalUserJoin}
+                        exprirationDate={formatDate(post.exprirationDate)}
+                      />
+                    ))
+                  : null}
               </SimpleGrid>
             )}
           </Flex>

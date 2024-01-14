@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 // Chakra imports
@@ -71,7 +70,7 @@ function SignIn() {
     try {
       const res = await axios({
         method: "post",
-        url: "http://localhost:3000/api/v1/login",
+        url: "http://localhost:3000/api/v1/login/admin",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Accept: "application/json",
@@ -83,28 +82,91 @@ function SignIn() {
       });
 
       if (res.data.status === "SUCCESS") {
-        console.log(res.data.data.orgResult);
-
-        // if (res.data.data.orgResult.type === "Admin") {
-        localStorage.setItem(
-          "orgResult",
-          JSON.stringify(res.data.data.orgResult)
-        );
-        localStorage.setItem(
-          "token",
-          JSON.stringify(res.data.data.refreshToken)
-        );
-        toast.success("Hi👋 " + res.data.data.orgResult.fullname, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        // Kiểm tra loại kết quả dựa trên quyền hạn
+        if (res.data.data.orgResult) {
+          if (!res.data.data.orgResult.isEnable) {
+            toast.warning(
+              "Tài khoản của bạn đã bị khóa vui lòng liên hệ quản trị viên để mở khóa!",
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+            return;
+          } else {
+            localStorage.setItem(
+              "result",
+              JSON.stringify(res.data.data.orgResult)
+            );
+            localStorage.setItem(
+              "token",
+              JSON.stringify(res.data.data.refreshToken)
+            );
+            history.push("/admin/default");
+          }
+        } else if (res.data.data.adminResult) {
+          if (!res.data.data.adminResult.isEnable) {
+            toast.warning(
+              "Tài khoản của bạn đã bị khóa vui lòng liên hệ quản trị viên để mở khóa!",
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+            return;
+          } else {
+            localStorage.setItem(
+              "result",
+              JSON.stringify(res.data.data.adminResult)
+            );
+            localStorage.setItem(
+              "token",
+              JSON.stringify(res.data.data.refreshToken)
+            );
+            history.push("/admin/default");
+          }
+        } else if (res.data.data.superAdResult) {
+          if (!res.data.data.superAdResult.isEnable) {
+            toast.warning(
+              "Tài khoản của bạn đã bị khóa vui lòng liên hệ quản trị viên để mở khóa!",
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+            return;
+          } else {
+            localStorage.setItem(
+              "result",
+              JSON.stringify(res.data.data.superAdResult)
+            );
+            localStorage.setItem(
+              "token",
+              JSON.stringify(res.data.data.refreshToken)
+            );
+            
+          }
+        }
         history.push("/admin/default");
+        // Lưu refreshToken vào localStorage
       }
     } catch (error) {
       toast.error("Đăng nhập thất bại!", {
@@ -118,6 +180,10 @@ function SignIn() {
         theme: "light",
       });
       console.log(error.response);
+    } finally {
+      
+      history.go(0);
+      
     }
   };
   const history = useHistory();

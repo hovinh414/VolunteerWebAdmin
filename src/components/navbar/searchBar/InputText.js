@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import "@fontsource/roboto";
-export function SearchBar(props) {
+export function InputText(props) {
   // Pass the computed styles into the `__css` prop
   const {
     searchPost,

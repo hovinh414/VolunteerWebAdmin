@@ -1,38 +1,42 @@
 export const columnsDataComplex = [
   {
+    Header: "Trạng thái",
+    accessor: "isEnable",
+    order:3,
+  },
+  {
     Header: "Ảnh đại diện",
     accessor: "avatar",
+    order:1,
   },
   {
-    Header: "Tên tổ chức",
-    accessor: "name",
-  },
-  {
-    Header: "Trạng thái",
-    accessor: "status",
-  },
-  {
-    Header: "Ngày tạo",
-    accessor: "date",
-  },
-  {
-    Header: "Loại tài khoản",
-    accessor: "role",
-  },
-  {
-    Header: "Thao tác",
-    accessor: "action",
+    Header: "Tên tài khoản",
+    accessor: "fullname",
+    order:2,
   },
   {
     Header: "Email",
     accessor: "email",
+    order:5,
   },
   {
-    Header: "Phone",
+    Header: "Số điện thoại",
     accessor: "phone",
+    order:6,
   },
   {
-    Header: "Address",
+    Header: "Loại tài khoản",
+    accessor: "type",
+    order:4,
+  },
+  {
+    Header: "Thao tác",
+    accessor: "_id",
+    order:8,
+  },
+  {
+    Header: "Địa chỉ",
     accessor: "address",
+    order:7,
   },
 ];
